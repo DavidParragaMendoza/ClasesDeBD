@@ -1,5 +1,5 @@
 # Plan de Implementación: Documentación Web Interactiva de Base de Datos 1 (SQL)
-
+hola
 Sitio web educativo con estética de documentación técnica oficial moderna (inspirado en Stripe Docs / VitePress / Tailwind Docs), diseñado de forma minimalista con detalles en colores pasteles (azul, amarillo, rojo), navegación intuitiva y un simulador SQL interactivo integrado.
 
 ---
