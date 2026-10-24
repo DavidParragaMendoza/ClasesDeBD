@@ -1,0 +1,75 @@
+/* ==========================================================================
+   VARIABLES DE SISTEMA DE DISEÑO - SQL DOCS (BD 1)
+   Estética: Documentación técnica oficial minimalista con acentos pasteles
+   ========================================================================== */
+
+:root {
+  /* Tipografía */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, Monaco, monospace;
+
+  /* Colores Neutros (Fondos y Superficies) */
+  --bg-app: #FAFBFC;
+  --bg-surface: #FFFFFF;
+  --bg-surface-elevated: #F8FAFC;
+  --bg-sidebar: #F8FAFC;
+  --bg-code: #0F172A;
+  --bg-code-header: #1E293B;
+
+  /* Bordes y Líneas Divisorias */
+  --border-subtle: #E2E8F0;
+  --border-muted: #CBD5E1;
+  --border-highlight: #94A3B8;
+
+  /* Jerarquía de Texto */
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #64748B;
+  --text-tertiary: #94A3B8;
+  --text-code: #F1F5F9;
+
+  /* Paleta Pastel Funcional */
+  /* 1. Azul Pastel (Estructura, SELECT, Información, Brand) */
+  --pastel-blue-bg: #EFF6FF;
+  --pastel-blue-border: #BFDBFE;
+  --pastel-blue-accent: #2563EB;
+  --pastel-blue-text: #1E40AF;
+
+  /* 2. Amarillo Pastel (Inserción INSERT, Tips, Advertencias) */
+  --pastel-yellow-bg: #FEFCE8;
+  --pastel-yellow-border: #FEF08A;
+  --pastel-yellow-accent: #CA8A04;
+  --pastel-yellow-text: #854D0E;
+
+  /* 3. Rojo / Coral Pastel (Operaciones críticas DELETE/UPDATE, Errores) */
+  --pastel-red-bg: #FEF2F2;
+  --pastel-red-border: #FECACA;
+  --pastel-red-accent: #DC2626;
+  --pastel-red-text: #991B1B;
+
+  /* Resaltado de Sintaxis SQL */
+  --sql-keyword: #60A5FA;
+  --sql-function: #F472B6;
+  --sql-string: #34D399;
+  --sql-number: #FBBF24;
+  --sql-type: #A78BFA;
+  --sql-comment: #64748B;
+
+  /* Layout y Dimensiones */
+  --header-height: 64px;
+  --sidebar-width: 280px;
+  --toc-width: 240px;
+  --content-max-width: 860px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  /* Sombras sutiles */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  --shadow-float: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+
+  /* Transiciones */
+  --transition-fast: 150ms ease;
+  --transition-base: 220ms ease;
+}

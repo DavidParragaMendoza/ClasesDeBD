@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SQL Docs — Fundamentos de Base de Datos 1</title>
+  <meta name="description" content="Documentación técnica interactiva sobre conceptos fundamentales de SQL para la materia de Base de Datos 1. Creada por David Párraga, Javier Infante, Carlos Bernabe y Deivy Prudente.">
+  
+  <!-- Tipografías de Google Fonts: Inter y JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Hojas de estilo del sistema de diseño -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       HEADER SUPERIOR
+       ======================================================================== -->
+  <header class="header">
+    <div class="header-brand">
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú de navegación">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="logo-badge">SQL</div>
+      <div class="brand-text">
+        <span>SQL Docs</span>
+        <span class="brand-version">BD 1</span>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <!-- Buscador Rápido -->
+      <div class="search-wrapper">
+        <span class="search-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
+        <input type="text" id="docSearchInput" class="search-input" placeholder="Buscar concepto o comando..." autocomplete="off">
+      </div>
+
+      <a href="#equipo" class="author-chip" style="text-decoration: none;">
+        <span class="author-avatar" style="background: linear-gradient(135deg, #10B981, #059669);">4</span>
+        <span class="author-name">Equipo</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       LAYOUT PRINCIPAL (SIDEBAR + CONTENIDO + TOC)
+       ======================================================================== -->
+  <div class="layout-container">
+
+    <!-- SIDEBAR DE NAVEGACIÓN -->
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">Comenzar</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-nav-item">
+            <a href="#introduccion" class="sidebar-nav-link active">
+              <span>Introducción a SQL</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-title">Módulos de Aprendizaje</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-nav-item">
+            <a href="#modulo-1" class="sidebar-nav-link">
+              <span>1. Creación de BD y Tablas</span>
+              <span class="nav-badge-done">Listo</span>
+            </a>
+          </li>
+          <li class="sidebar-nav-item">
+            <a href="#modulo-2" class="sidebar-nav-link">
+              <span>2. Inserción de Datos (INSERT)</span>
+              <span class="nav-badge-pending">Pendiente</span>
+            </a>
+          </li>
+          <li class="sidebar-nav-item">
+            <a href="#modulo-3" class="sidebar-nav-link">
+              <span>3. Consultas (SELECT / WHERE)</span>
+              <span class="nav-badge-pending">Pendiente</span>
+            </a>
+          </li>
+          <li class="sidebar-nav-item">
+            <a href="#modulo-4" class="sidebar-nav-link">
+              <span>4. Modificación y Borrado</span>
+              <span class="nav-badge-pending">Pendiente</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-title">Proyecto</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-nav-item">
+            <a href="#equipo" class="sidebar-nav-link">
+              <span>Equipo de Desarrollo</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- ÁREA DE CONTENIDO PRINCIPAL -->
+    <main class="content-area">
+
+      <!-- ====================================================================
+           SECCIÓN: INTRODUCCIÓN
+           ==================================================================== -->
+      <section id="introduccion" class="doc-section">
+        <h1>Documentación Oficial: Base de Datos 1</h1>
+        <p>
+          Bienvenido a la guía técnica de referencia sobre <strong>SQL (Structured Query Language)</strong> para la materia de Base de Datos 1. Este portal interactivo ha sido desarrollado de forma colaborativa por un equipo de 4 desarrolladores, dividiendo los fundamentos esenciales en módulos especializados con enfoque práctico y minimalista.
+        </p>
+
+        <!-- Callout Azul Pastel Informativo -->
+        <div class="callout callout-info">
+          <div class="callout-icon">💡</div>
+          <div class="callout-body">
+            <div class="callout-title">¿Qué es SQL?</div>
+            <p>
+              SQL es el estándar mundial para interactuar con <strong>Sistemas Gestores de Bases de Datos Relacionales (RDBMS)</strong> como PostgreSQL, MySQL, MariaDB, SQL Server y SQLite. Permite definir la estructura del esquema (DDL), manipular los registros (DML) y consultar información de forma declarativa.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           MÓDULO 1: DAVID PÁRRAGA
+           ==================================================================== -->
+      <section id="modulo-1" class="doc-section">
+        <h2>Módulo 1: Creación de Base de Datos y Tablas</h2>
+        
+        <!-- Metadata y Responsable del Módulo -->
+        <div class="module-header-meta">
+          <span class="module-badge badge-m1">Módulo 1 // DDL</span>
+          <div class="author-chip">
+            <span class="author-avatar">DP</span>
+            <span>Responsable Técnico: <strong class="author-name">David Párraga</strong></span>
+          </div>
+          <span class="nav-badge-done">Módulo Completado</span>
+        </div>
+
+        <p>
+          En este módulo aprenderás los comandos de definición de datos (<strong>Data Definition Language - DDL</strong>) necesarios para dar vida a un nuevo entorno de base de datos desde cero: cómo crear el contenedor principal, seleccionar el esquema de trabajo, comprender los tipos de datos primitivos y construir tablas sólidas con restricciones de integridad.
+        </p>
+
+        <!-- 1.1 CREATE DATABASE -->
+        <h3 id="creacion-database">1. Creación de una Base de Datos (`CREATE DATABASE`)</h3>
+        <p>
+          El primer paso en cualquier arquitectura relacional es declarar el espacio de almacenamiento lógico donde coexistirán todas nuestras tablas, relaciones e índices.
+        </p>
+        <p>
+          La instrucción fundamental es <code>CREATE DATABASE</code>. Es una excelente práctica incluir la cláusula preventiva <code>IF NOT EXISTS</code> para evitar que el script falle en caso de que la base de datos ya haya sido creada con anterioridad.
+        </p>
+
+        <!-- Bloque de Código 1 -->
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">SQL &bull; Creación de Base de Datos</span>
+            <button class="copy-btn" title="Copiar código">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copiar
+            </button>
+          </div>
+          <pre class="code-content"><code><span class="sql-cmt">-- 1. Crear la base de datos si no existe previamente</span>
+<span class="sql-kw">CREATE DATABASE IF NOT EXISTS</span> universidad_db
+  <span class="sql-kw">CHARACTER SET</span> utf8mb4
+  <span class="sql-kw">COLLATE</span> utf8mb4_unicode_ci;
+
+<span class="sql-cmt">-- 2. Verificar la creación listando las bases de datos del servidor</span>
+<span class="sql-kw">SHOW DATABASES</span>;</code></pre>
+        </div>
+
+        <!-- Callout Amarillo Pastel Tip -->
+        <div class="callout callout-tip">
+          <div class="callout-icon">⭐</div>
+          <div class="callout-body">
+            <div class="callout-title">Recomendación de Codificación: utf8mb4</div>
+            <p>
+              Siempre define <code>CHARACTER SET utf8mb4</code> al crear bases de datos modernas. A diferencia del UTF-8 estándar de 3 bytes de motores antiguos, <code>utf8mb4</code> soporta soporte completo para 4 bytes, admitiendo acentos, tildes en español, caracteres especiales y emojis sin corrupción de datos.
+            </p>
+          </div>
+        </div>
+
+        <!-- 1.2 USE DATABASE -->
+        <h3 id="seleccion-database">2. Selección del Esquema Activo (`USE`)</h3>
+        <p>
+          Un servidor de base de datos puede hospedar decenas de bases de datos simultáneamente. Para indicarle al motor SQL sobre cuál de ellas ejecutaremos las sentencias posteriores, usamos el comando <code>USE</code>:
+        </p>
+
+        <!-- Bloque de Código 2 -->
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">SQL &bull; Selección de Contexto</span>
+            <button class="copy-btn" title="Copiar código">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copiar
+            </button>
+          </div>
+          <pre class="code-content"><code><span class="sql-cmt">-- Establecer universidad_db como la base de datos activa</span>
+<span class="sql-kw">USE</span> universidad_db;</code></pre>
+        </div>
+
+        <!-- 1.3 TIPOS DE DATOS -->
+        <h3 id="tipos-de-datos">3. Tipos de Datos Primitivos Esenciales</h3>
+        <p>
+          Antes de declarar una tabla, debemos definir qué tipo de valor almacenará cada columna. El uso correcto de los tipos de datos garantiza <strong>integridad</strong> y <strong>eficiencia de almacenamiento</strong>.
+        </p>
+
+        <div class="table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>Tipo de Dato</th>
+                <th>Descripción</th>
+                <th>Rango / Tamaño</th>
+                <th>Ejemplo de Uso</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>INT</code></td>
+                <td>Número entero de 4 bytes con o sin signo.</td>
+                <td>-2,147,483,648 a 2,147,483,647</td>
+                <td><code>id_estudiante INT</code>, <code>edad INT</code></td>
+              </tr>
+              <tr>
+                <td><code>VARCHAR(n)</code></td>
+                <td>Cadena de texto de longitud variable de hasta <em>n</em> caracteres.</td>
+                <td>1 a 65,535 caracteres</td>
+                <td><code>nombre VARCHAR(80)</code>, <code>email VARCHAR(120)</code></td>
+              </tr>
+              <tr>
+                <td><code>DECIMAL(p, s)</code></td>
+                <td>Número de coma fija exacto. <em>p</em> es la precisión total y <em>s</em> la escala decimal.</td>
+                <td>Valores monetarios y notas</td>
+                <td><code>promedio DECIMAL(4, 2)</code> (ej. 10.00, 09.50)</td>
+              </tr>
+              <tr>
+                <td><code>DATE</code></td>
+                <td>Almacena únicamente fecha en formato estándar ISO.</td>
+                <td><code>YYYY-MM-DD</code></td>
+                <td><code>fecha_nacimiento DATE</code> (ej. 2003-05-18)</td>
+              </tr>
+              <tr>
+                <td><code>BOOLEAN</code></td>
+                <td>Valor lógico binario (internamente equivalente a <code>TINYINT(1)</code>).</td>
+                <td><code>TRUE (1)</code> o <code>FALSE (0)</code></td>
+                <td><code>activo BOOLEAN DEFAULT TRUE</code></td>
+              </tr>
+              <tr>
+                <td><code>TEXT</code></td>
+                <td>Cadenas de texto extensas para descripciones largas o artículos.</td>
+                <td>Hasta 64 KB</td>
+                <td><code>biografia TEXT</code>, <code>observaciones TEXT</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- [PARTE 2 EN DESARROLLO] 4. Creación de Tablas y 5. Inspección -->
+        <div class="callout callout-info" style="margin-top: 2rem;">
+          <div class="callout-icon">📌</div>
+          <div class="callout-body">
+            <div class="callout-title">Siguiente Entrega (Parte 2 de Módulo 1): CREATE TABLE y Restricciones</div>
+            <p>En el siguiente commit se incorporará la creación de tablas con llaves primarias, llaves foráneas, visualizador del esquema y comandos de inspección.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           MÓDULOS RESTANTES (STUBS ELEGANTES PARA INTEGRANTES)
+           ==================================================================== -->
+
+      <!-- MÓDULO 2: JAVIER INFANTE -->
+      <section id="modulo-2" class="doc-section">
+        <h2>Módulo 2: Inserción de Datos en SQL (INSERT INTO)</h2>
+        <div class="module-header-meta">
+          <span class="module-badge badge-m2">Módulo 2 // DML</span>
+          <div class="author-chip">
+            <span class="author-avatar" style="background: linear-gradient(135deg, #F59E0B, #B45309);">JI</span>
+            <span>Responsable Técnico: <strong class="author-name">Javier Infante</strong></span>
+          </div>
+          <span class="nav-badge-pending">En Desarrollo</span>
+        </div>
+
+        <p>
+          En este módulo se detallará cómo poblar una base de datos utilizando la sentencia <code>INSERT INTO</code>, explorando la inserción de registros individuales, inserciones por lotes (bulk inserts), manejo de valores por defecto y prevención de inconsistencias en llaves foráneas.
+        </p>
+
+        <div class="module-placeholder-card">
+          <div class="placeholder-icon">📥</div>
+          <div class="placeholder-badge">
+            <span class="author-chip">Asignado a: Javier Infante</span>
+          </div>
+          <h3>Espacio de Trabajo reservado para Javier Infante</h3>
+          <p>
+            Aquí se implementarán los ejemplos prácticos de <code>INSERT INTO carreras ...</code> e <code>INSERT INTO estudiantes ...</code> con capturas de errores frecuentes y buenas prácticas.
+          </p>
+          <div class="code-block" style="text-align: left; max-width: 600px; margin: 1rem auto;">
+            <div class="code-header">
+              <span class="code-lang">Vista Previa Sintaxis</span>
+            </div>
+            <pre class="code-content"><code><span class="sql-kw">INSERT INTO</span> estudiantes (matricula, nombre, apellido, email, id_carrera)
+<span class="sql-kw">VALUES</span> (<span class="sql-str">'2026-001'</span>, <span class="sql-str">'Carlos'</span>, <span class="sql-str">'Bernabe'</span>, <span class="sql-str">'carlos@universidad.edu'</span>, 1);</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- MÓDULO 3: CARLOS BERNABE -->
+      <section id="modulo-3" class="doc-section">
+        <h2>Módulo 3: Consultas de Selección (SELECT, WHERE, LIKE)</h2>
+        <div class="module-header-meta">
+          <span class="module-badge badge-m3">Módulo 3 // DQL</span>
+          <div class="author-chip">
+            <span class="author-avatar" style="background: linear-gradient(135deg, #10B981, #047857);">CB</span>
+            <span>Responsable Técnico: <strong class="author-name">Carlos Bernabe</strong></span>
+          </div>
+          <span class="nav-badge-pending">En Desarrollo</span>
+        </div>
+
+        <p>
+          El módulo de consultas abordará la recuperación eficiente de información con <code>SELECT</code>, proyecciones con alias de columna (<code>AS</code>), filtrado condicional preciso con <code>WHERE</code> (operadores lógicos y relacionales) y búsquedas por patrones de texto utilizando <code>LIKE</code> con comodines (<code>%</code> y <code>_</code>).
+        </p>
+
+        <div class="module-placeholder-card">
+          <div class="placeholder-icon">🔍</div>
+          <div class="placeholder-badge">
+            <span class="author-chip">Asignado a: Carlos Bernabe</span>
+          </div>
+          <h3>Espacio de Trabajo reservado para Carlos Bernabe</h3>
+          <p>
+            Aquí se documentarán las consultas simples, el uso de operadores <code>AND</code>, <code>OR</code>, <code>BETWEEN</code>, <code>IN</code> y las técnicas de coincidencia difusa de patrones con comodines <code>LIKE '%patron%'</code>.
+          </p>
+          <div class="code-block" style="text-align: left; max-width: 600px; margin: 1rem auto;">
+            <div class="code-header">
+              <span class="code-lang">Vista Previa Sintaxis</span>
+            </div>
+            <pre class="code-content"><code><span class="sql-kw">SELECT</span> nombre, apellido, email 
+<span class="sql-kw">FROM</span> estudiantes 
+<span class="sql-kw">WHERE</span> email <span class="sql-kw">LIKE</span> <span class="sql-str">'%@gmail.com'</span> <span class="sql-kw">AND</span> promedio >= 8.5;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- MÓDULO 4: DEIVY PRUDENTE -->
+      <section id="modulo-4" class="doc-section">
+        <h2>Módulo 4: Actualización y Borrado de Datos (UPDATE y DELETE)</h2>
+        <div class="module-header-meta">
+          <span class="module-badge badge-m4">Módulo 4 // DML</span>
+          <div class="author-chip">
+            <span class="author-avatar" style="background: linear-gradient(135deg, #EF4444, #B91C1C);">DP</span>
+            <span>Responsable Técnico: <strong class="author-name">Deivy Prudente</strong></span>
+          </div>
+          <span class="nav-badge-pending">En Desarrollo</span>
+        </div>
+
+        <p>
+          En este módulo se explicarán las operaciones de modificación de tuplas existentes mediante <code>UPDATE ... SET</code> y la eliminación de registros con <code>DELETE FROM</code>, haciendo especial énfasis en el peligro crítico de ejecutar estas operaciones sin cláusula <code>WHERE</code> y la comparativa con <code>TRUNCATE TABLE</code>.
+        </p>
+
+        <div class="module-placeholder-card">
+          <div class="placeholder-icon">✏️</div>
+          <div class="placeholder-badge">
+            <span class="author-chip">Asignado a: Deivy Prudente</span>
+          </div>
+          <h3>Espacio de Trabajo reservado para Deivy Prudente</h3>
+          <p>
+            Aquí se detallará el flujo de actualización segura con transacciones, la advertencia en rojo pastel del olvido de <code>WHERE</code>, y la integridad referencial al eliminar filas relacionadas.
+          </p>
+          <div class="code-block" style="text-align: left; max-width: 600px; margin: 1rem auto;">
+            <div class="code-header">
+              <span class="code-lang">Vista Previa Sintaxis</span>
+            </div>
+            <pre class="code-content"><code><span class="sql-cmt">-- ¡Siempre verifica la condición WHERE!</span>
+<span class="sql-kw">UPDATE</span> estudiantes 
+<span class="sql-kw">SET</span> promedio = 9.75 
+<span class="sql-kw">WHERE</span> id_estudiante = 1;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           SECCIÓN: EQUIPO DE DESARROLLO (4 DESARROLLADORES)
+           ==================================================================== -->
+      <section id="equipo" class="doc-section">
+        <h2>Equipo de Desarrollo</h2>
+        <p>
+          Este proyecto colaborativo ha sido diseñado y programado por un equipo de 4 desarrolladores, donde cada integrante lidera un módulo específico para garantizar rigurosidad conceptual y cobertura técnica:
+        </p>
+
+        <div class="team-grid">
+          <!-- Miembro 1: David Párraga -->
+          <div class="team-card">
+            <div class="team-card-header">
+              <div class="team-avatar" style="background: linear-gradient(135deg, #2563EB, #1D4ED8);">DP</div>
+              <div class="team-info">
+                <h4>David Párraga</h4>
+                <span>Desarrollador / Arquitectura</span>
+              </div>
+            </div>
+            <span class="module-badge badge-m1">Módulo 1: Creación de BD y Tablas</span>
+            <p style="font-size: 0.85rem; margin: 0; color: var(--text-muted);">
+              Responsable de DDL, diseño de base, tipos de datos, llaves primarias/foráneas y sistema de diseño visual.
+            </p>
+          </div>
+
+          <!-- Miembro 2: Javier Infante -->
+          <div class="team-card">
+            <div class="team-card-header">
+              <div class="team-avatar" style="background: linear-gradient(135deg, #F59E0B, #B45309);">JI</div>
+              <div class="team-info">
+                <h4>Javier Infante</h4>
+                <span>Desarrollador</span>
+              </div>
+            </div>
+            <span class="module-badge badge-m2">Módulo 2: Inserción de Datos (INSERT)</span>
+            <p style="font-size: 0.85rem; margin: 0; color: var(--text-muted);">
+              Responsable de la documentación pedagógica de inserción simple, múltiple y validación de tipos en registros.
+            </p>
+          </div>
+
+          <!-- Miembro 3: Carlos Bernabe -->
+          <div class="team-card">
+            <div class="team-card-header">
+              <div class="team-avatar" style="background: linear-gradient(135deg, #10B981, #047857);">CB</div>
+              <div class="team-info">
+                <h4>Carlos Bernabe</h4>
+                <span>Desarrollador</span>
+              </div>
+            </div>
+            <span class="module-badge badge-m3">Módulo 3: Consultas (SELECT / WHERE)</span>
+            <p style="font-size: 0.85rem; margin: 0; color: var(--text-muted);">
+              Responsable del módulo de consultas de proyección, filtrado condicional y búsqueda con comodines LIKE.
+            </p>
+          </div>
+
+          <!-- Miembro 4: Deivy Prudente -->
+          <div class="team-card">
+            <div class="team-card-header">
+              <div class="team-avatar" style="background: linear-gradient(135deg, #EF4444, #B91C1C);">DP</div>
+              <div class="team-info">
+                <h4>Deivy Prudente</h4>
+                <span>Desarrollador</span>
+              </div>
+            </div>
+            <span class="module-badge badge-m4">Módulo 4: UPDATE y DELETE</span>
+            <p style="font-size: 0.85rem; margin: 0; color: var(--text-muted);">
+              Responsable de las operaciones de modificación, eliminación de registros, alertas críticas y TRUNCATE.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer de navegación -->
+      <footer class="doc-footer">
+        <div class="footer-nav">
+          <a href="#introduccion" class="footer-btn">
+            <span class="footer-btn-sub">Anterior</span>
+            <span class="footer-btn-title">&larr; Introducción a SQL</span>
+          </a>
+          <a href="#modulo-2" class="footer-btn" style="text-align: right;">
+            <span class="footer-btn-sub">Siguiente Módulo</span>
+            <span class="footer-btn-title">Inserción de Datos (INSERT) &rarr;</span>
+          </a>
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin: 0;">
+          Proyecto de Base de Datos 1 &bull; Desarrollado por David Párraga, Javier Infante, Carlos Bernabe y Deivy Prudente &bull; 2026
+        </p>
+      </footer>
+
+    </main>
+
+    <!-- ASIDE DERECHO (TABLA DE CONTENIDOS "EN ESTA PÁGINA") -->
+    <aside class="toc-aside">
+      <div class="toc-title">En esta página</div>
+      <ul class="toc-list">
+        <li class="toc-item">
+          <a href="#introduccion" class="toc-link">Introducción</a>
+        </li>
+        <li class="toc-item">
+          <a href="#modulo-1" class="toc-link">Módulo 1: Creación de BD y Tablas</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#creacion-database" class="toc-link">1. CREATE DATABASE</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#seleccion-database" class="toc-link">2. USE Database</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#tipos-de-datos" class="toc-link">3. Tipos de Datos</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#creacion-tables" class="toc-link">4. CREATE TABLE y Constraints</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#inspeccion-tablas" class="toc-link">5. Inspección (SHOW / DESCRIBE)</a>
+        </li>
+        <li class="toc-item">
+          <a href="#modulo-2" class="toc-link">Módulo 2: INSERT (Javier)</a>
+        </li>
+        <li class="toc-item">
+          <a href="#modulo-3" class="toc-link">Módulo 3: SELECT (Carlos)</a>
+        </li>
+        <li class="toc-item">
+          <a href="#modulo-4" class="toc-link">Módulo 4: UPDATE / DELETE (Deivy)</a>
+        </li>
+        <li class="toc-item">
+          <a href="#equipo" class="toc-link">Equipo de Desarrollo</a>
+        </li>
+      </ul>
+    </aside>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+</body>
+</html>

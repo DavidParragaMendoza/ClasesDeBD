@@ -1,0 +1,367 @@
+/* ==========================================================================
+   COMPONENTES UI: CALLOUTS PASTELES, BLOQUES DE CÓDIGO, BADGES Y TABLAS
+   ========================================================================== */
+
+/* Bloques de Código Profesionales */
+.code-block {
+  margin: 1.5rem 0 2rem 0;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-code);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 1rem;
+  background-color: var(--bg-code-header);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.code-lang {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.code-lang::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #38BDF8;
+}
+
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.65rem;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  color: #E2E8F0;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.copy-btn:hover {
+  background-color: rgba(255, 255, 255, 0.16);
+  color: #FFFFFF;
+}
+
+.copy-btn.copied {
+  background-color: #10B981;
+  border-color: #059669;
+  color: #FFFFFF;
+}
+
+.code-content {
+  padding: 1.15rem 1.25rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--text-code);
+  margin: 0;
+}
+
+/* Tokens de Sintaxis SQL */
+.sql-kw { color: var(--sql-keyword); font-weight: 600; }
+.sql-type { color: var(--sql-type); }
+.sql-fn { color: var(--sql-function); }
+.sql-str { color: var(--sql-string); }
+.sql-num { color: var(--sql-number); }
+.sql-cmt { color: var(--sql-comment); font-style: italic; }
+
+/* Callout Boxes con Paleta Pastel */
+.callout {
+  display: flex;
+  gap: 1rem;
+  padding: 1.15rem 1.25rem;
+  border-radius: var(--radius-md);
+  margin: 1.75rem 0;
+  border: 1px solid transparent;
+  font-size: 0.925rem;
+}
+
+.callout-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  flex-shrink: 0;
+  padding-top: 0.15rem;
+}
+
+.callout-body {
+  flex: 1;
+}
+
+.callout-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 0.35rem;
+}
+
+.callout-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* Callout Azul Pastel (Informativo / Concepto) */
+.callout-info {
+  background-color: var(--pastel-blue-bg);
+  border-color: var(--pastel-blue-border);
+  color: var(--pastel-blue-text);
+}
+.callout-info .callout-title { color: #1E3A8A; }
+
+/* Callout Amarillo Pastel (Tip / Precaución / Buenas Prácticas) */
+.callout-tip {
+  background-color: var(--pastel-yellow-bg);
+  border-color: var(--pastel-yellow-border);
+  color: var(--pastel-yellow-text);
+}
+.callout-tip .callout-title { color: #713F12; }
+
+/* Callout Rojo Pastel (Peligro Crítico / Errores destructivos) */
+.callout-danger {
+  background-color: var(--pastel-red-bg);
+  border-color: var(--pastel-red-border);
+  color: var(--pastel-red-text);
+}
+.callout-danger .callout-title { color: #7F1D1D; }
+
+/* Badge de Responsable del Módulo */
+.module-header-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.author-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.825rem;
+  color: var(--text-secondary);
+}
+
+.author-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+  color: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+.author-name {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.module-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+}
+
+.badge-m1 {
+  background-color: var(--pastel-blue-bg);
+  color: var(--pastel-blue-text);
+  border: 1px solid var(--pastel-blue-border);
+}
+
+.badge-m2 {
+  background-color: var(--pastel-yellow-bg);
+  color: var(--pastel-yellow-text);
+  border: 1px solid var(--pastel-yellow-border);
+}
+
+.badge-m3 {
+  background-color: #ECFDF5;
+  color: #065F46;
+  border: 1px solid #A7F3D0;
+}
+
+.badge-m4 {
+  background-color: var(--pastel-red-bg);
+  color: var(--pastel-red-text);
+  border: 1px solid var(--pastel-red-border);
+}
+
+/* Tablas de Datos Técnicos */
+.table-wrapper {
+  margin: 1.5rem 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  background-color: var(--bg-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.885rem;
+}
+
+.doc-table th {
+  background-color: var(--bg-surface-elevated);
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.825rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.doc-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+
+.doc-table tr:last-child td {
+  border-bottom: none;
+}
+
+.doc-table tr:hover td {
+  background-color: rgba(248, 250, 252, 0.6);
+}
+
+/* Simulador / Visor de Estructura de Tabla */
+.schema-preview {
+  margin: 1.5rem 0;
+  border: 1px solid var(--pastel-blue-border);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-surface);
+  overflow: hidden;
+}
+
+.schema-preview-header {
+  background-color: var(--pastel-blue-bg);
+  padding: 0.65rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--pastel-blue-border);
+}
+
+.schema-table-name {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--pastel-blue-text);
+  font-size: 0.9rem;
+}
+
+/* Card para los demás integrantes (Javier, Carlos, Deivy) */
+.module-placeholder-card {
+  margin: 2rem 0;
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  border: 2px dashed var(--border-subtle);
+  background-color: var(--bg-surface);
+  text-align: center;
+  transition: all var(--transition-base);
+}
+
+.module-placeholder-card:hover {
+  border-color: var(--border-highlight);
+  box-shadow: var(--shadow-sm);
+}
+
+.placeholder-icon {
+  font-size: 2.2rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.8;
+}
+
+.placeholder-badge {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+}
+
+/* Grid de Miembros del Equipo */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.team-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+}
+
+.team-card:hover {
+  border-color: var(--border-muted);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.team-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.team-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #FFFFFF;
+}
+
+.team-info h4 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.team-info span {
+  font-size: 0.785rem;
+  color: var(--text-muted);
+}
