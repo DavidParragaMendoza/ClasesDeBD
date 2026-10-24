@@ -94,13 +94,13 @@
           <li class="sidebar-nav-item">
             <a href="#modulo-3" class="sidebar-nav-link">
               <span>3. Consultas (SELECT / WHERE)</span>
-              <span class="nav-badge-pending">Pendiente</span>
+              <span class="nav-badge-done">Listo</span>
             </a>
           </li>
           <li class="sidebar-nav-item">
             <a href="#modulo-4" class="sidebar-nav-link">
               <span>4. Modificación y Borrado</span>
-              <span class="nav-badge-pending">Pendiente</span>
+              <span class="nav-badge-done">Listo</span>
             </a>
           </li>
         </ul>
@@ -898,77 +898,557 @@
 
       </section>
 
-      <!-- MÓDULO 3: CARLOS BERNABE -->
+      <!-- ====================================================================
+           MÓDULO 3: CARLOS BERNABE
+           ==================================================================== -->
       <section id="modulo-3" class="doc-section">
         <h2>Módulo 3: Consultas de Selección (SELECT, WHERE, LIKE)</h2>
+        
+        <!-- Metadata y Responsable del Módulo -->
         <div class="module-header-meta">
           <span class="module-badge badge-m3">Módulo 3 // DQL</span>
           <div class="author-chip">
             <span class="author-avatar" style="background: linear-gradient(135deg, #10B981, #047857);">CB</span>
             <span>Responsable Técnico: <strong class="author-name">Carlos Bernabe</strong></span>
           </div>
-          <span class="nav-badge-pending">En Desarrollo</span>
+          <span class="nav-badge-done">Módulo Completado</span>
         </div>
 
         <p>
-          El módulo de consultas abordará la recuperación eficiente de información con <code>SELECT</code>, proyecciones con alias de columna (<code>AS</code>), filtrado condicional preciso con <code>WHERE</code> (operadores lógicos y relacionales) y búsquedas por patrones de texto utilizando <code>LIKE</code> con comodines (<code>%</code> y <code>_</code>).
+          Una vez creada la base de datos y poblada con información, la operación más frecuente en el ciclo de vida de cualquier sistema informático es la <strong>recuperación y análisis de datos</strong>. En SQL, estas operaciones pertenecen al <strong>DQL (Data Query Language)</strong> y se fundamentan en la instrucción <code>SELECT</code>, el equivalente computacional de los operadores de Proyección ($\pi$) y Selección ($\sigma$) del álgebra relacional.
         </p>
 
-        <div class="module-placeholder-card">
-          <div class="placeholder-icon">🔍</div>
-          <div class="placeholder-badge">
-            <span class="author-chip">Asignado a: Carlos Bernabe</span>
+        <!-- 3.1 SELECT Y PROYECCIÓN -->
+        <h3 id="select-simple">1. La Sentencia `SELECT` y Proyección de Columnas</h3>
+        <p>
+          La proyección nos permite especificar exactamente qué atributos o columnas deseamos recibir como resultado de una consulta.
+        </p>
+        <p>
+          Existen dos formas fundamentales de proyección:
+        </p>
+        <ul>
+          <li><strong>Proyección Total (<code>SELECT *</code>)</strong>: Solicita todas las columnas físicas de la tabla en el orden en que fueron declaradas en el DDL.</li>
+          <li><strong>Proyección Específica (<code>SELECT col1, col2</code>)</strong>: Solicita únicamente los atributos necesarios para la vista o pantalla del usuario.</li>
+        </ul>
+
+        <!-- Bloque de Código: SELECT Básico y Proyección -->
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">SQL &bull; Proyecciones con SELECT</span>
+            <button class="copy-btn" title="Copiar código">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copiar
+            </button>
           </div>
-          <h3>Espacio de Trabajo reservado para Carlos Bernabe</h3>
-          <p>
-            Aquí se documentarán las consultas simples, el uso de operadores <code>AND</code>, <code>OR</code>, <code>BETWEEN</code>, <code>IN</code> y las técnicas de coincidencia difusa de patrones con comodines <code>LIKE '%patron%'</code>.
-          </p>
-          <div class="code-block" style="text-align: left; max-width: 600px; margin: 1rem auto;">
-            <div class="code-header">
-              <span class="code-lang">Vista Previa Sintaxis</span>
-            </div>
-            <pre class="code-content"><code><span class="sql-kw">SELECT</span> nombre, apellido, email 
-<span class="sql-kw">FROM</span> estudiantes 
-<span class="sql-kw">WHERE</span> email <span class="sql-kw">LIKE</span> <span class="sql-str">'%@gmail.com'</span> <span class="sql-kw">AND</span> promedio >= 8.5;</code></pre>
+          <pre class="code-content"><code><span class="sql-cmt">-- 1. Proyección total: Obtener todas las columnas de la tabla carreras</span>
+<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> carreras;
+
+<span class="sql-cmt">-- 2. Proyección específica: Solo nombres y correos de los estudiantes</span>
+<span class="sql-kw">SELECT</span> nombre, apellido, email
+<span class="sql-kw">FROM</span> estudiantes;
+
+<span class="sql-cmt">-- 3. Uso de Alias (AS) para renombrar columnas en el resultado y expresiones</span>
+<span class="sql-kw">SELECT</span> 
+  matricula <span class="sql-kw">AS</span> Carnet_Estudiante,
+  <span class="sql-fn">CONCAT</span>(nombre, <span class="sql-str">' '</span>, apellido) <span class="sql-kw">AS</span> Nombre_Completo,
+  promedio <span class="sql-kw">AS</span> Calificacion_General
+<span class="sql-kw">FROM</span> estudiantes;</code></pre>
+        </div>
+
+        <!-- Callout Amarillo Pastel Tip -->
+        <div class="callout callout-tip">
+          <div class="callout-icon">⭐</div>
+          <div class="callout-body">
+            <div class="callout-title">Regla de Rendimiento de Carlos Bernabe: Evita SELECT * en Producción</div>
+            <p>
+              Aunque <code>SELECT *</code> es muy cómodo al interactuar con la consola interactiva, en aplicaciones web comerciales debes evitarlo. Traer columnas innecesarias satura el ancho de banda de red, impide el uso de <em>Covering Indexes</em> en el motor de base de datos y consume memoria innecesaria en el servidor web. Proyecta siempre de forma explícita solo los atributos que tu interfaz va a renderizar.
+            </p>
           </div>
+        </div>
+
+        <!-- 3.2 CLÁUSULA WHERE -->
+        <h3 id="filtrado-where">2. Filtrado Condicional con la Cláusula `WHERE`</h3>
+        <p>
+          Sin un mecanismo de filtro, las consultas retornarían millones de filas indiscriminadamente. La cláusula <code>WHERE</code> actúa como un predicado lógico que evalúa cada registro: <strong>solo aquellas filas donde la condición resulte en <code>TRUE</code> formarán parte del conjunto resultante</strong>.
+        </p>
+
+        <div class="table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>Operador</th>
+                <th>Tipo</th>
+                <th>Significado / Acción</th>
+                <th>Ejemplo de Consulta SQL</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>=</code>, <code>!=</code> (o <code>&lt;&gt;</code>)</td>
+                <td>Comparación</td>
+                <td>Igualdad y desigualdad estricta.</td>
+                <td><code>WHERE activo = TRUE</code>, <code>WHERE id_carrera != 2</code></td>
+              </tr>
+              <tr>
+                <td><code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code></td>
+                <td>Relacional</td>
+                <td>Comparaciones numéricas, de texto o fechas.</td>
+                <td><code>WHERE promedio &gt;= 9.00</code>, <code>WHERE fecha_nacimiento &lt; '2004-01-01'</code></td>
+              </tr>
+              <tr>
+                <td><code>AND</code></td>
+                <td>Lógico</td>
+                <td>Intersección: Ambas condiciones deben cumplirse.</td>
+                <td><code>WHERE id_carrera = 1 AND promedio &gt;= 8.5</code></td>
+              </tr>
+              <tr>
+                <td><code>OR</code></td>
+                <td>Lógico</td>
+                <td>Unión: Basta con que al menos una condición sea verdadera.</td>
+                <td><code>WHERE id_carrera = 1 OR id_carrera = 3</code></td>
+              </tr>
+              <tr>
+                <td><code>BETWEEN ... AND ...</code></td>
+                <td>Rango</td>
+                <td>Verifica inclusión dentro de un rango cerrado <code>[a, b]</code>.</td>
+                <td><code>WHERE promedio BETWEEN 8.00 AND 10.00</code></td>
+              </tr>
+              <tr>
+                <td><code>IN (...)</code></td>
+                <td>Pertenencia</td>
+                <td>Comprueba si el valor coincide con cualquier elemento de una lista.</td>
+                <td><code>WHERE id_carrera IN (1, 2, 4)</code></td>
+              </tr>
+              <tr>
+                <td><code>IS NULL</code> / <code>IS NOT NULL</code></td>
+                <td>Nulidad</td>
+                <td>Evalúa la presencia o ausencia de valor (Lógica trivalente).</td>
+                <td><code>WHERE fecha_nacimiento IS NOT NULL</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Bloque de Código WHERE -->
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">SQL &bull; Consultas Condicionales Complejas</span>
+            <button class="copy-btn" title="Copiar código">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copiar
+            </button>
+          </div>
+          <pre class="code-content"><code><span class="sql-cmt">-- 1. Alumnos de excelencia: Carrera 1 con promedio mayor o igual a 9.0</span>
+<span class="sql-kw">SELECT</span> matricula, nombre, apellido, promedio
+<span class="sql-kw">FROM</span> estudiantes
+<span class="sql-kw">WHERE</span> id_carrera = <span class="sql-num">1</span> <span class="sql-kw">AND</span> promedio >= <span class="sql-num">9.00</span>;
+
+<span class="sql-cmt">-- 2. Alumnos con promedio intermedio usando BETWEEN</span>
+<span class="sql-kw">SELECT</span> nombre, apellido, promedio
+<span class="sql-kw">FROM</span> estudiantes
+<span class="sql-kw">WHERE</span> promedio <span class="sql-kw">BETWEEN</span> <span class="sql-num">8.00</span> <span class="sql-kw">AND</span> <span class="sql-num">9.50</span>;
+
+<span class="sql-cmt">-- 3. Uso de IN para filtrar múltiples carreras sin encadenar muchos OR</span>
+<span class="sql-kw">SELECT</span> matricula, nombre, id_carrera
+<span class="sql-kw">FROM</span> estudiantes
+<span class="sql-kw">WHERE</span> id_carrera <span class="sql-kw">IN</span> (<span class="sql-num">1</span>, <span class="sql-num">3</span>);</code></pre>
+        </div>
+
+        <!-- Callout Azul Pastel Informativo -->
+        <div class="callout callout-info">
+          <div class="callout-icon">💡</div>
+          <div class="callout-body">
+            <div class="callout-title">Lógica Trivalente en SQL: ¿Por qué campo = NULL nunca funciona?</div>
+            <p>
+              En SQL, el valor <code>NULL</code> no representa el valor cero ni una cadena vacía, sino un <em>estado de desconocimiento</em>. En la lógica trivalente de SQL (<code>TRUE</code>, <code>FALSE</code>, <code>UNKNOWN</code>), comparar cualquier cosa con <code>NULL</code> mediante el operador <code>=</code> devuelve siempre <code>UNKNOWN</code>, haciendo que la fila sea descartada. Por esta razón, la sintaxis obligatoria es siempre <code>columna IS NULL</code> o <code>columna IS NOT NULL</code>.
+            </p>
+          </div>
+        </div>
+
+        <!-- 3.3 CLÁUSULA LIKE -->
+        <h3 id="patrones-like">3. Búsqueda de Patrones de Texto con la Cláusula `LIKE`</h3>
+        <p>
+          Cuando no conocemos el valor exacto de un texto (por ejemplo, buscar un usuario por su inicial, filtrar correos de un dominio específico o buscar por apellido), utilizamos el operador <code>LIKE</code> acompañado de <strong>caracteres comodín (wildcards)</strong>:
+        </p>
+
+        <ul>
+          <li><strong><code>%</code> (Signo de Porcentaje)</strong>: Representa <strong>cero, uno o múltiples caracteres</strong> cualesquiera.</li>
+          <li><strong><code>_</code> (Guión Bajo)</strong>: Representa <strong>exactamente un único carácter</strong> en esa posición fija.</li>
+        </ul>
+
+        <div class="table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>Patrón de Búsqueda</th>
+                <th>Interpretación</th>
+                <th>Valores que Coinciden</th>
+                <th>Valores que NO Coinciden</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>LIKE 'Carlos%'</code></td>
+                <td>Inicia con "Carlos", seguido de cualquier cantidad de texto.</td>
+                <td>"Carlos", "Carlos Bernabe", "Carlos Alberto"</td>
+                <td>"Juan Carlos", "carlos" (en motores sensibles)</td>
+              </tr>
+              <tr>
+                <td><code>LIKE '%@universidad.edu'</code></td>
+                <td>Termina con el dominio institucional especificado.</td>
+                <td>"carlos@universidad.edu", "david@universidad.edu"</td>
+                <td>"carlos@gmail.com", "universidad.edu.ec"</td>
+              </tr>
+              <tr>
+                <td><code>LIKE '%Sistemas%'</code></td>
+                <td>Contiene la subcadena en cualquier posición del texto.</td>
+                <td>"Ingeniería en Sistemas", "Sistemas Distribuidos"</td>
+                <td>"Ingeniería Civil", "Industrial"</td>
+              </tr>
+              <tr>
+                <td><code>LIKE 'SIS-__'</code></td>
+                <td>Inicia con "SIS-" seguido de <strong>exactamente dos</strong> caracteres.</td>
+                <td>"SIS-01", "SIS-02", "SIS-99"</td>
+                <td>"SIS-1", "SIS-001", "SIS"</td>
+              </tr>
+              <tr>
+                <td><code>LIKE '_a%'</code></td>
+                <td>El segundo carácter debe ser obligatoriamente la letra 'a'.</td>
+                <td>"Carlos", "David", "Javier"</td>
+                <td>"Deivy", "Bruno", "Ana"</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Bloque de Código LIKE -->
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">SQL &bull; Búsquedas Avanzadas con LIKE</span>
+            <button class="copy-btn" title="Copiar código">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copiar
+            </button>
+          </div>
+          <pre class="code-content"><code><span class="sql-cmt">-- 1. Filtrar estudiantes cuyo correo pertenezca al dominio institucional</span>
+<span class="sql-kw">SELECT</span> matricula, nombre, apellido, email
+<span class="sql-kw">FROM</span> estudiantes
+<span class="sql-kw">WHERE</span> email <span class="sql-kw">LIKE</span> <span class="sql-str">'%@universidad.edu'</span>;
+
+<span class="sql-cmt">-- 2. Buscar matrículas registradas en el año 2026</span>
+<span class="sql-kw">SELECT</span> matricula, nombre, apellido
+<span class="sql-kw">FROM</span> estudiantes
+<span class="sql-kw">WHERE</span> matricula <span class="sql-kw">LIKE</span> <span class="sql-str">'2026-%'</span>;
+
+<span class="sql-cmt">-- 3. Búsqueda combinada: Nombre que empiece con 'D' y promedio sobresaliente</span>
+<span class="sql-kw">SELECT</span> matricula, nombre, apellido, promedio
+<span class="sql-kw">FROM</span> estudiantes
+<span class="sql-kw">WHERE</span> nombre <span class="sql-kw">LIKE</span> <span class="sql-str">'D%'</span> <span class="sql-kw">AND</span> promedio >= <span class="sql-num">9.00</span>;</code></pre>
+        </div>
+
+        <!-- 3.4 ORDENAMIENTO Y PAGINACIÓN -->
+        <h3 id="orden-paginacion">4. Ordenamiento de Resultados (`ORDER BY`) y Paginación (`LIMIT`)</h3>
+        <p>
+          En SQL, las filas de una tabla no tienen un orden físico garantizado. Si requerimos los datos ordenados alfabéticamente o por rendimiento académico, debemos especificar <code>ORDER BY</code> junto a <code>ASC</code> (ascendente) o <code>DESC</code> (descendente).
+        </p>
+
+        <!-- Bloque de Código ORDER BY y LIMIT -->
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">SQL &bull; Ordenamiento y Paginación</span>
+            <button class="copy-btn" title="Copiar código">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copiar
+            </button>
+          </div>
+          <pre class="code-content"><code><span class="sql-cmt">-- Top 3 estudiantes con los mejores promedios de la carrera de Sistemas (id 1)</span>
+<span class="sql-kw">SELECT</span> matricula, nombre, apellido, promedio
+<span class="sql-kw">FROM</span> estudiantes
+<span class="sql-kw">WHERE</span> id_carrera = <span class="sql-num">1</span>
+<span class="sql-kw">ORDER BY</span> promedio <span class="sql-kw">DESC</span>
+<span class="sql-kw">LIMIT</span> <span class="sql-num">3</span>;</code></pre>
+        </div>
+
+        <!-- Visor del Conjunto de Resultados -->
+        <h4 id="vista-resultados-select">Conjunto de Resultados Proyectado (Vista Previa de la Consulta)</h4>
+        <div class="schema-preview">
+          <div class="schema-preview-header">
+            <span class="schema-table-name">Resultado de: SELECT ... WHERE email LIKE '%@universidad.edu' ORDER BY promedio DESC</span>
+            <span class="nav-badge-done">3 filas recuperadas</span>
+          </div>
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>Matrícula</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Email</th>
+                <th>Promedio</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>2026-003</code></td>
+                <td>David</td>
+                <td>Párraga</td>
+                <td>david.parraga@universidad.edu</td>
+                <td><strong style="color: #059669;">9.80</strong></td>
+              </tr>
+              <tr>
+                <td><code>2026-001</code></td>
+                <td>Carlos</td>
+                <td>Bernabe</td>
+                <td>carlos.bernabe@universidad.edu</td>
+                <td><strong style="color: #059669;">9.50</strong></td>
+              </tr>
+              <tr>
+                <td><code>2026-002</code></td>
+                <td>Javier</td>
+                <td>Infante</td>
+                <td>javier.infante@universidad.edu</td>
+                <td><strong style="color: #059669;">9.20</strong></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
-      <!-- MÓDULO 4: DEIVY PRUDENTE -->
+      <!-- ====================================================================
+           MÓDULO 4: DEIVY PRUDENTE
+           ==================================================================== -->
       <section id="modulo-4" class="doc-section">
         <h2>Módulo 4: Actualización y Borrado de Datos (UPDATE y DELETE)</h2>
+        
+        <!-- Metadata y Responsable del Módulo -->
         <div class="module-header-meta">
           <span class="module-badge badge-m4">Módulo 4 // DML</span>
           <div class="author-chip">
             <span class="author-avatar" style="background: linear-gradient(135deg, #EF4444, #B91C1C);">DP</span>
             <span>Responsable Técnico: <strong class="author-name">Deivy Prudente</strong></span>
           </div>
-          <span class="nav-badge-pending">En Desarrollo</span>
+          <span class="nav-badge-done">Módulo Completado</span>
         </div>
 
         <p>
-          En este módulo se explicarán las operaciones de modificación de tuplas existentes mediante <code>UPDATE ... SET</code> y la eliminación de registros con <code>DELETE FROM</code>, haciendo especial énfasis en el peligro crítico de ejecutar estas operaciones sin cláusula <code>WHERE</code> y la comparativa con <code>TRUNCATE TABLE</code>.
+          Los sistemas dinámicos no son estáticos: los alumnos cambian de promedio, actualizan su correo de contacto o eventualmente egresan y son dados de baja. En este módulo, cubriremos las dos sentencias modificadoras de tuplas: <code>UPDATE</code> para editar datos existentes y <code>DELETE</code> para eliminar registros de una tabla, abordando con especial detalle las <strong>normas de seguridad críticas para evitar desastres en producción</strong>.
         </p>
 
-        <div class="module-placeholder-card">
-          <div class="placeholder-icon">✏️</div>
-          <div class="placeholder-badge">
-            <span class="author-chip">Asignado a: Deivy Prudente</span>
+        <!-- 4.1 UPDATE -->
+        <h3 id="modificacion-update">1. Actualización de Datos con `UPDATE`</h3>
+        <p>
+          La instrucción <code>UPDATE</code> modifica el valor de una o más columnas en una tabla sobre las filas que coincidan con la condición especificada en el <code>WHERE</code>.
+        </p>
+
+        <p><strong>Estructura general:</strong></p>
+        <pre class="code-content" style="background: var(--bg-surface-elevated); color: var(--text-primary); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); margin-bottom: 1rem;"><code><span class="sql-kw">UPDATE</span> nombre_tabla
+<span class="sql-kw">SET</span> columna1 = nuevo_valor1, columna2 = nuevo_valor2
+<span class="sql-kw">WHERE</span> condicion_especifica;</code></pre>
+
+        <!-- Bloque de Código UPDATE -->
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">SQL &bull; Ejemplos de Modificación Segura</span>
+            <button class="copy-btn" title="Copiar código">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copiar
+            </button>
           </div>
-          <h3>Espacio de Trabajo reservado para Deivy Prudente</h3>
-          <p>
-            Aquí se detallará el flujo de actualización segura con transacciones, la advertencia en rojo pastel del olvido de <code>WHERE</code>, y la integridad referencial al eliminar filas relacionadas.
-          </p>
-          <div class="code-block" style="text-align: left; max-width: 600px; margin: 1rem auto;">
-            <div class="code-header">
-              <span class="code-lang">Vista Previa Sintaxis</span>
-            </div>
-            <pre class="code-content"><code><span class="sql-cmt">-- ¡Siempre verifica la condición WHERE!</span>
-<span class="sql-kw">UPDATE</span> estudiantes 
-<span class="sql-kw">SET</span> promedio = 9.75 
-<span class="sql-kw">WHERE</span> id_estudiante = 1;</code></pre>
+          <pre class="code-content"><code><span class="sql-cmt">-- 1. Actualizar el promedio de un estudiante específico por su ID único</span>
+<span class="sql-kw">UPDATE</span> estudiantes
+<span class="sql-kw">SET</span> promedio = <span class="sql-num">9.90</span>
+<span class="sql-kw">WHERE</span> id_estudiante = <span class="sql-num">1</span>;
+
+<span class="sql-cmt">-- 2. Actualizar múltiples columnas simultáneamente (correo y estado activo)</span>
+<span class="sql-kw">UPDATE</span> estudiantes
+<span class="sql-kw">SET</span> 
+  email = <span class="sql-str">'deivy.prudente@universidad.edu'</span>,
+  activo = <span class="sql-kw">TRUE</span>
+<span class="sql-kw">WHERE</span> matricula = <span class="sql-str">'2026-004'</span>;
+
+<span class="sql-cmt">-- 3. Actualización computada: bonificar 0.25 puntos a los alumnos de Sistemas</span>
+<span class="sql-kw">UPDATE</span> estudiantes
+<span class="sql-kw">SET</span> promedio = promedio + <span class="sql-num">0.25</span>
+<span class="sql-kw">WHERE</span> id_carrera = <span class="sql-num">1</span> <span class="sql-kw">AND</span> promedio &lt;= <span class="sql-num">9.75</span>;</code></pre>
+        </div>
+
+        <!-- 4.2 DELETE -->
+        <h3 id="borrado-delete">2. Eliminación de Registros con `DELETE`</h3>
+        <p>
+          La instrucción <code>DELETE FROM</code> elimina permanentemente del almacenamiento una o más tuplas existentes que satisfagan el predicado lógico indicado.
+        </p>
+
+        <!-- Bloque de Código DELETE -->
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">SQL &bull; Eliminación de Filas con DELETE</span>
+            <button class="copy-btn" title="Copiar código">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copiar
+            </button>
+          </div>
+          <pre class="code-content"><code><span class="sql-cmt">-- 1. Eliminación puntual: Borrar un estudiante por su Clave Primaria</span>
+<span class="sql-kw">DELETE FROM</span> estudiantes
+<span class="sql-kw">WHERE</span> id_estudiante = <span class="sql-num">4</span>;
+
+<span class="sql-cmt">-- 2. Eliminación condicional: Depurar registros inactivos con promedio nulo</span>
+<span class="sql-kw">DELETE FROM</span> estudiantes
+<span class="sql-kw">WHERE</span> activo = <span class="sql-kw">FALSE</span> <span class="sql-kw">AND</span> promedio = <span class="sql-num">0.00</span>;</code></pre>
+        </div>
+
+        <!-- 4.3 ALERTA CRÍTICA: OLVIDAR EL WHERE -->
+        <!-- Callout Rojo Pastel Peligro Crítico -->
+        <div class="callout callout-danger" style="border-width: 2px;">
+          <div class="callout-icon">🚨</div>
+          <div class="callout-body">
+            <div class="callout-title">¡ALERTA MÁXIMA DE DEIVY PRUDENTE: NUNCA EJECUTES UPDATE O DELETE SIN WHERE!</div>
+            <p>
+              Si ejecutas <code>UPDATE estudiantes SET promedio = 10.0;</code> sin la cláusula <code>WHERE</code>, el motor modificará <strong>todas y cada una de las filas de la tabla sin pedir confirmación</strong>.
+            </p>
+            <p style="margin-top: 0.5rem;">
+              De forma análoga, si ejecutas <code>DELETE FROM estudiantes;</code> sin <code>WHERE</code>, ¡<strong>vaciarás por completo la tabla</strong> perdiendo toda la información del alumnado!
+            </p>
+            <p style="margin-top: 0.5rem; font-weight: 600;">
+              🛡️ Protección recomendada: Activa el modo seguro en tu cliente SQL ejecutando: <code>SET SQL_SAFE_UPDATES = 1;</code>. Este parámetro bloquea automáticamente cualquier comando que no utilice una llave primaria o índice en el <code>WHERE</code>.
+            </p>
           </div>
         </div>
+
+        <!-- 4.4 COMPARATIVA DELETE VS TRUNCATE VS DROP -->
+        <h3 id="delete-vs-truncate">3. Comparativa Definitiva: `DELETE` vs `TRUNCATE` vs `DROP`</h3>
+        <p>
+          En entrevistas de trabajo y exámenes de Base de Datos 1, la distinción entre estas tres operaciones de supresión de datos es una de las preguntas técnicas más recurrentes:
+        </p>
+
+        <div class="table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>Criterio Técnico</th>
+                <th><code>DELETE</code></th>
+                <th><code>TRUNCATE TABLE</code></th>
+                <th><code>DROP TABLE</code></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Categoría SQL</strong></td>
+                <td>DML (Manipulación de Datos)</td>
+                <td>DDL (Definición de Datos)</td>
+                <td>DDL (Definición de Datos)</td>
+              </tr>
+              <tr>
+                <td><strong>¿Permite WHERE?</strong></td>
+                <td><span class="author-chip" style="background: var(--pastel-blue-bg); color: var(--pastel-blue-accent);">SÍ (Filtrado selectivo)</span></td>
+                <td><span class="author-chip" style="background: var(--pastel-red-bg); color: var(--pastel-red-text);">NO (Vacía toda la tabla)</span></td>
+                <td><span class="author-chip" style="background: var(--pastel-red-bg); color: var(--pastel-red-text);">NO (Destruye toda la tabla)</span></td>
+              </tr>
+              <tr>
+                <td><strong>¿Conserva la Estructura?</strong></td>
+                <td>Sí, la tabla permanece vacía o parcial.</td>
+                <td>Sí, conserva columnas, índices y tipos.</td>
+                <td><strong>No</strong>, borra metadatos, índices y estructura.</td>
+              </tr>
+              <tr>
+                <td><strong>Reseteo de AUTO_INCREMENT</strong></td>
+                <td>No resetea el contador correlativo.</td>
+                <td><strong>Sí resetea el contador a 1</strong>.</td>
+                <td>Inaplicable (la tabla deja de existir).</td>
+              </tr>
+              <tr>
+                <td><strong>Velocidad y Mecanismo</strong></td>
+                <td>Lento (borra fila por fila y escribe logs).</td>
+                <td><strong>Ultra Rápido</strong> (desasigna bloques de páginas).</td>
+                <td>Instantáneo a nivel de catálogo.</td>
+              </tr>
+              <tr>
+                <td><strong>Transacciones y ROLLBACK</strong></td>
+                <td>Permite deshacer con <code>ROLLBACK</code>.</td>
+                <td>No reversible en la mayoría de motores.</td>
+                <td>No reversible (DDL auto-commit).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 4.5 INTEGRIDAD REFERENCIAL Y ON DELETE -->
+        <h3 id="integridad-delete">4. Integridad Referencial ante Borrados (`FOREIGN KEY`)</h3>
+        <p>
+          ¿Qué ocurre si intentamos eliminar la carrera con <code>id_carrera = 1</code> (Sistemas) cuando existen estudiantes vinculados a ella? El motor relacional reaccionará de acuerdo a la cláusula declarada en la llave foránea:
+        </p>
+
+        <ul>
+          <li><strong><code>ON DELETE RESTRICT</code> (o <code>NO ACTION</code>)</strong>: Es la regla por defecto. El motor rechaza el borrado arrojando <code>Error 1451: Cannot delete or update a parent row: a foreign key constraint fails</code>.</li>
+          <li><strong><code>ON DELETE CASCADE</code></strong>: Al eliminar la carrera padre, <strong>elimina en cascada automáticamente</strong> a todos los estudiantes inscritos en ella.</li>
+          <li><strong><code>ON DELETE SET NULL</code></strong>: Conserva a los estudiantes, pero asigna el valor <code>NULL</code> en su columna <code>id_carrera</code>.</li>
+        </ul>
+
+        <!-- Callout Amarillo Pastel Advertencia -->
+        <div class="callout callout-tip">
+          <div class="callout-icon">⭐</div>
+          <div class="callout-body">
+            <div class="callout-title">Uso Prudente de ON DELETE CASCADE</div>
+            <p>
+              Ten sumo cuidado con <code>CASCADE</code> en tablas centrales de tu negocio. Si borras un cliente y la base de datos tiene configurado borrado en cascada sobre ventas y facturas, podrías eliminar involuntariamente todo el historial contable de tu organización.
+            </p>
+          </div>
+        </div>
+
+        <!-- 4.6 TRANSACCIONES SEGURAS -->
+        <h3 id="transacciones-seguras">5. Buenas Prácticas: Transacciones Seguras (`START TRANSACTION`)</h3>
+        <p>
+          Para protegerte contra modificaciones accidentales al trabajar en entornos reales, utiliza el patrón de transacciones manuales:
+        </p>
+
+        <!-- Bloque de Código Transacciones -->
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">SQL &bull; Patrón de Modificación Segura con Transacciones</span>
+            <button class="copy-btn" title="Copiar código">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copiar
+            </button>
+          </div>
+          <pre class="code-content"><code><span class="sql-cmt">-- 1. Iniciar un bloque transaccional atómico</span>
+<span class="sql-kw">START TRANSACTION</span>;
+
+<span class="sql-cmt">-- 2. Ejecutar la actualización o eliminación</span>
+<span class="sql-kw">UPDATE</span> estudiantes
+<span class="sql-kw">SET</span> activo = <span class="sql-kw">FALSE</span>
+<span class="sql-kw">WHERE</span> matricula = <span class="sql-str">'2026-001'</span>;
+
+<span class="sql-cmt">-- 3. Inspeccionar el efecto antes de consolidar</span>
+<span class="sql-kw">SELECT</span> id_estudiante, matricula, nombre, activo
+<span class="sql-kw">FROM</span> estudiantes
+<span class="sql-kw">WHERE</span> matricula = <span class="sql-str">'2026-001'</span>;
+
+<span class="sql-cmt">-- 4A. Si el resultado es correcto, confirmar definitivamente:</span>
+<span class="sql-kw">COMMIT</span>;
+
+<span class="sql-cmt">-- 4B. Si hubo un error o modificó más filas de las esperadas, deshacer todo:</span>
+<span class="sql-cmt">-- ROLLBACK;</span></code></pre>
+        </div>
+
       </section>
 
       <!-- ====================================================================
@@ -1023,9 +1503,12 @@
                 <span>Desarrollador</span>
               </div>
             </div>
-            <span class="module-badge badge-m3">Módulo 3: Consultas (SELECT / WHERE)</span>
+            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+              <span class="module-badge badge-m3">Módulo 3: Consultas (SELECT / WHERE)</span>
+              <span class="nav-badge-done">Listo</span>
+            </div>
             <p style="font-size: 0.85rem; margin: 0; color: var(--text-muted);">
-              Responsable del módulo de consultas de proyección, filtrado condicional y búsqueda con comodines LIKE.
+              Responsable del módulo de consultas DQL, proyecciones con alias, filtrado con operadores WHERE, coincidencia difusa con comodines LIKE y paginación.
             </p>
           </div>
 
@@ -1038,9 +1521,12 @@
                 <span>Desarrollador</span>
               </div>
             </div>
-            <span class="module-badge badge-m4">Módulo 4: UPDATE y DELETE</span>
+            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+              <span class="module-badge badge-m4">Módulo 4: UPDATE y DELETE</span>
+              <span class="nav-badge-done">Listo</span>
+            </div>
             <p style="font-size: 0.85rem; margin: 0; color: var(--text-muted);">
-              Responsable de las operaciones de modificación, eliminación de registros, alertas críticas y TRUNCATE.
+              Responsable de las operaciones de modificación, eliminación de registros, alertas críticas de seguridad sin WHERE, comparativa TRUNCATE y transacciones.
             </p>
           </div>
         </div>
@@ -1049,13 +1535,13 @@
       <!-- Footer de navegación -->
       <footer class="doc-footer">
         <div class="footer-nav">
-          <a href="#modulo-1" class="footer-btn">
+          <a href="#modulo-2" class="footer-btn">
             <span class="footer-btn-sub">Módulo Anterior</span>
-            <span class="footer-btn-title">&larr; 1. Creación de BD y Tablas</span>
+            <span class="footer-btn-title">&larr; 2. Inserción de Datos (INSERT)</span>
           </a>
-          <a href="#modulo-3" class="footer-btn" style="text-align: right;">
-            <span class="footer-btn-sub">Siguiente Módulo</span>
-            <span class="footer-btn-title">3. Consultas (SELECT / WHERE) &rarr;</span>
+          <a href="#equipo" class="footer-btn" style="text-align: right;">
+            <span class="footer-btn-sub">Siguiente Sección</span>
+            <span class="footer-btn-title">Equipo de Desarrollo &rarr;</span>
           </a>
         </div>
         <p style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin: 0;">
@@ -1115,10 +1601,40 @@
           <a href="#simulador-insert" class="toc-link">7. Simulador Interactivo</a>
         </li>
         <li class="toc-item">
-          <a href="#modulo-3" class="toc-link">Módulo 3: SELECT (Carlos)</a>
+          <a href="#modulo-3" class="toc-link">Módulo 3: Consultas (Carlos)</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#select-simple" class="toc-link">1. SELECT y Proyección</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#filtrado-where" class="toc-link">2. Cláusula WHERE y Operadores</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#patrones-like" class="toc-link">3. Búsqueda con LIKE (% y _)</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#orden-paginacion" class="toc-link">4. ORDER BY y LIMIT</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#vista-resultados-select" class="toc-link">5. Conjunto Proyectado</a>
         </li>
         <li class="toc-item">
-          <a href="#modulo-4" class="toc-link">Módulo 4: UPDATE / DELETE (Deivy)</a>
+          <a href="#modulo-4" class="toc-link">Módulo 4: UPDATE y DELETE (Deivy)</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#modificacion-update" class="toc-link">1. Modificación con UPDATE</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#borrado-delete" class="toc-link">2. Eliminación con DELETE</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#delete-vs-truncate" class="toc-link">3. DELETE vs TRUNCATE vs DROP</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#integridad-delete" class="toc-link">4. Integridad Referencial</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#transacciones-seguras" class="toc-link">5. Transacciones Seguras</a>
         </li>
         <li class="toc-item">
           <a href="#equipo" class="toc-link">Equipo de Desarrollo</a>
