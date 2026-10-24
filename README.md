@@ -13,7 +13,7 @@ El proyecto está dividido en 4 módulos esenciales, cada uno con un desarrollad
 | Módulo | Tema Técnico | Responsable | Estado |
 | :--- | :--- | :--- | :--- |
 | **Módulo 1** | **Creación de Base de Datos y Tablas** (`CREATE DATABASE`, `USE`, `CREATE TABLE`, tipos de datos, llaves primarias/foráneas, restricciones). | 👤 **David Párraga** | 🟢 **Completado** |
-| **Módulo 2** | **Inserción de Datos con SQL** (`INSERT INTO` fila única, inserción masiva, selección de columnas y validaciones). | 👤 **Javier Infante** | 🟡 **En desarrollo** |
+| **Módulo 2** | **Inserción de Datos con SQL** (`INSERT INTO` fila única, inserción masiva, selección de columnas, validaciones y simulador). | 👤 **Javier Infante** | 🟢 **Completado** |
 | **Módulo 3** | **Consultas de Selección** (`SELECT`, alias `AS`, filtrado condicional con `WHERE`, operadores y búsqueda con `LIKE` `%` y `_`). | 👤 **Carlos Bernabe** | 🟡 **En desarrollo** |
 | **Módulo 4** | **Modificación y Eliminación** (`UPDATE`, `DELETE` con `WHERE`, prevención de borrado accidental y comparativa con `TRUNCATE`). | 👤 **Deivy Prudente** | 🟡 **En desarrollo** |
 

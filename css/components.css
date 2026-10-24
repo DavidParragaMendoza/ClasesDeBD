@@ -365,3 +365,185 @@
   font-size: 0.785rem;
   color: var(--text-muted);
 }
+
+/* ==========================================================================
+   SIMULADOR INTERACTIVO DE INSERCIÓN SQL (MÓDULO 2 - JAVIER INFANTE)
+   ========================================================================== */
+
+.simulator-card {
+  margin: 2rem 0;
+  border: 1px solid var(--pastel-yellow-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--bg-surface);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.simulator-header {
+  background: linear-gradient(135deg, #FEFCE8 0%, #FEF9C3 100%);
+  padding: 0.9rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--pastel-yellow-border);
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.simulator-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.simulator-badge {
+  background-color: var(--pastel-yellow-accent);
+  color: #FFFFFF;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.simulator-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #713F12;
+  margin: 0;
+}
+
+.simulator-body {
+  padding: 1.25rem;
+}
+
+.simulator-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+}
+
+.sim-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.825rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 1px solid transparent;
+}
+
+.sim-btn-primary {
+  background-color: #F59E0B;
+  color: #FFFFFF;
+  border-color: #D97706;
+}
+.sim-btn-primary:hover {
+  background-color: #D97706;
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
+}
+
+.sim-btn-bulk {
+  background-color: var(--pastel-blue-bg);
+  color: var(--pastel-blue-accent);
+  border-color: var(--pastel-blue-border);
+}
+.sim-btn-bulk:hover {
+  background-color: #DBEAFE;
+  color: #1D4ED8;
+}
+
+.sim-btn-error {
+  background-color: var(--pastel-red-bg);
+  color: var(--pastel-red-accent);
+  border-color: var(--pastel-red-border);
+}
+.sim-btn-error:hover {
+  background-color: #FEE2E2;
+}
+
+.sim-btn-reset {
+  background-color: var(--bg-surface-elevated);
+  color: var(--text-secondary);
+  border-color: var(--border-subtle);
+  margin-left: auto;
+}
+.sim-btn-reset:hover {
+  background-color: #E2E8F0;
+  color: var(--text-primary);
+}
+
+.sim-console {
+  background-color: var(--bg-code);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sim-console-header {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.sim-query-display {
+  color: #38BDF8;
+  white-space: pre-wrap;
+  word-break: break-all;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+}
+
+.sim-feedback {
+  padding: 0.4rem 0.65rem;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.sim-feedback.success {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.sim-feedback.error {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #F87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.sim-table-container {
+  overflow-x: auto;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+@keyframes rowFlash {
+  0% {
+    background-color: #FEF08A;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.new-row-highlight {
+  animation: rowFlash 1.8s ease-out;
+}
+

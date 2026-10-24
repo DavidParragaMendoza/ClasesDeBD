@@ -88,7 +88,7 @@
           <li class="sidebar-nav-item">
             <a href="#modulo-2" class="sidebar-nav-link">
               <span>2. Inserción de Datos (INSERT)</span>
-              <span class="nav-badge-pending">Pendiente</span>
+              <span class="nav-badge-done">Listo</span>
             </a>
           </li>
           <li class="sidebar-nav-item">
@@ -473,30 +473,429 @@
             <span class="author-avatar" style="background: linear-gradient(135deg, #F59E0B, #B45309);">JI</span>
             <span>Responsable Técnico: <strong class="author-name">Javier Infante</strong></span>
           </div>
-          <span class="nav-badge-pending">En Desarrollo</span>
+          <span class="nav-badge-done">Módulo Completado</span>
         </div>
 
         <p>
-          En este módulo se detallará cómo poblar una base de datos utilizando la sentencia <code>INSERT INTO</code>, explorando la inserción de registros individuales, inserciones por lotes (bulk inserts), manejo de valores por defecto y prevención de inconsistencias en llaves foráneas.
+          Una vez definidas las estructuras y reglas de integridad con los comandos DDL vistos en el Módulo 1, el siguiente paso fundamental es poblar la base de datos con registros reales (también denominados <strong>tuplas</strong> o <strong>filas</strong>). En SQL, la instrucción por excelencia para esta tarea es <code>INSERT INTO</code>, perteneciente al subconjunto <strong>DML (Data Manipulation Language)</strong>.
         </p>
 
-        <div class="module-placeholder-card">
-          <div class="placeholder-icon">📥</div>
-          <div class="placeholder-badge">
-            <span class="author-chip">Asignado a: Javier Infante</span>
+        <!-- 2.1 SINTAXIS BÁSICA DE INSERT INTO -->
+        <h3 id="sintaxis-insert">1. Sintaxis Fundamental y Estructura de `INSERT INTO`</h3>
+        <p>
+          La instrucción <code>INSERT INTO</code> le indica al motor relacional en qué tabla debe almacenar nueva información y qué valores asignar a cada una de sus columnas.
+        </p>
+        <p>
+          En sistemas relacionales con integridad referencial, debemos respetar el <strong>orden de dependencia</strong>: primero poblamos las tablas maestras o independientes (como <code>carreras</code>) y posteriormente las tablas secundarias o dependientes (como <code>estudiantes</code>), asegurando que las llaves foráneas apunten a filas que verdaderamente existan.
+        </p>
+
+        <!-- Bloque de Código: Inserción en carreras -->
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">SQL &bull; Poblar Tabla Padre (carreras)</span>
+            <button class="copy-btn" title="Copiar código">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copiar
+            </button>
           </div>
-          <h3>Espacio de Trabajo reservado para Javier Infante</h3>
-          <p>
-            Aquí se implementarán los ejemplos prácticos de <code>INSERT INTO carreras ...</code> e <code>INSERT INTO estudiantes ...</code> con capturas de errores frecuentes y buenas prácticas.
-          </p>
-          <div class="code-block" style="text-align: left; max-width: 600px; margin: 1rem auto;">
-            <div class="code-header">
-              <span class="code-lang">Vista Previa Sintaxis</span>
-            </div>
-            <pre class="code-content"><code><span class="sql-kw">INSERT INTO</span> estudiantes (matricula, nombre, apellido, email, id_carrera)
-<span class="sql-kw">VALUES</span> (<span class="sql-str">'2026-001'</span>, <span class="sql-str">'Carlos'</span>, <span class="sql-str">'Bernabe'</span>, <span class="sql-str">'carlos@universidad.edu'</span>, 1);</code></pre>
+          <pre class="code-content"><code><span class="sql-cmt">-- 1. Insertar la primera carrera universitaria</span>
+<span class="sql-kw">INSERT INTO</span> carreras (codigo, nombre, duracion_semestres)
+<span class="sql-kw">VALUES</span> (<span class="sql-str">'SIS-01'</span>, <span class="sql-str">'Ingeniería en Sistemas Computacionales'</span>, <span class="sql-num">9</span>);
+
+<span class="sql-cmt">-- 2. Insertar una segunda carrera</span>
+<span class="sql-kw">INSERT INTO</span> carreras (codigo, nombre, duracion_semestres)
+<span class="sql-kw">VALUES</span> (<span class="sql-str">'TEL-02'</span>, <span class="sql-str">'Ingeniería en Telecomunicaciones'</span>, <span class="sql-num">8</span>);
+
+<span class="sql-cmt">-- 3. Insertar una tercera carrera</span>
+<span class="sql-kw">INSERT INTO</span> carreras (codigo, nombre, duracion_semestres)
+<span class="sql-kw">VALUES</span> (<span class="sql-str">'CIV-03'</span>, <span class="sql-str">'Ingeniería Civil'</span>, <span class="sql-num">10</span>);</code></pre>
+        </div>
+
+        <!-- Callout Azul Pastel Informativo -->
+        <div class="callout callout-info">
+          <div class="callout-icon">💡</div>
+          <div class="callout-body">
+            <div class="callout-title">Concepto Clave: Omisión de Llave Primaria AUTO_INCREMENT</div>
+            <p>
+              Observa que en la sentencia anterior <strong>no mencionamos la columna <code>id_carrera</code></strong>. Dado que fue declarada como <code>INT AUTO_INCREMENT PRIMARY KEY</code> en el Módulo 1, el motor SQL se encarga automáticamente de asignarle de forma correlativa el valor <code>1</code>, <code>2</code>, <code>3</code>, etc., garantizando que jamás se duplique.
+            </p>
           </div>
         </div>
+
+        <!-- 2.2 COLUMNAS EXPLÍCITAS VS INSERCIÓN TOTAL -->
+        <h3 id="columnas-vs-total">2. Inserción con Lista de Columnas vs Inserción Posicional</h3>
+        <p>
+          Existen dos maneras sintácticas de ejecutar un <code>INSERT INTO</code>. Aunque ambas son válidas según el estándar SQL, en entornos profesionales y de producción existe una diferencia crítica de estabilidad:
+        </p>
+
+        <div class="table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>Enfoque</th>
+                <th>Sintaxis</th>
+                <th>Ventajas</th>
+                <th>Riesgo / Desventajas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Forma Explícita<br><span class="author-chip" style="background: var(--pastel-yellow-bg); color: var(--pastel-yellow-text); padding: 1px 6px; font-size: 0.72rem;">Recomendada</span></strong></td>
+                <td><code>INSERT INTO tabla (col1, col2) VALUES (v1, v2);</code></td>
+                <td>
+                  Inmune a cambios futuros en la tabla; orden independiente; permite omitir campos con <code>DEFAULT</code> o <code>NULL</code>.
+                </td>
+                <td>Escribir sentencias ligeramente más largas.</td>
+              </tr>
+              <tr>
+                <td><strong>Forma Posicional<br><span class="author-chip" style="background: var(--pastel-red-bg); color: var(--pastel-red-text); padding: 1px 6px; font-size: 0.72rem;">No Recomendada</span></strong></td>
+                <td><code>INSERT INTO tabla VALUES (v1, v2, v3, ...);</code></td>
+                <td>Menos caracteres al escribir manualmente en consola.</td>
+                <td>
+                  <strong>Extremadamente frágil</strong>: Si se añade una columna con <code>ALTER TABLE</code>, todas las consultas se rompen al instante.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Bloque de Código Comparativo -->
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">SQL &bull; Buenas Prácticas de Inserción</span>
+            <button class="copy-btn" title="Copiar código">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copiar
+            </button>
+          </div>
+          <pre class="code-content"><code><span class="sql-cmt">-- ✅ FORMA CORRECTA Y ROBUSTA: Especificando las columnas deseadas</span>
+<span class="sql-kw">INSERT INTO</span> carreras (codigo, nombre, duracion_semestres)
+<span class="sql-kw">VALUES</span> (<span class="sql-str">'IND-04'</span>, <span class="sql-str">'Ingeniería Industrial'</span>, <span class="sql-num">9</span>);
+
+<span class="sql-cmt">-- ❌ FORMA FRÁGIL (EVITAR EN CÓDIGO DE PRODUCCIÓN):</span>
+<span class="sql-cmt">-- Requiere conocer la posición física exacta de todas las columnas (incluso el ID NULL)</span>
+<span class="sql-kw">INSERT INTO</span> carreras
+<span class="sql-kw">VALUES</span> (<span class="sql-kw">NULL</span>, <span class="sql-str">'IND-04'</span>, <span class="sql-str">'Ingeniería Industrial'</span>, <span class="sql-num">9</span>);</code></pre>
+        </div>
+
+        <!-- Callout Amarillo Pastel Tip -->
+        <div class="callout callout-tip">
+          <div class="callout-icon">⭐</div>
+          <div class="callout-body">
+            <div class="callout-title">Regla de Oro de Javier Infante</div>
+            <p>
+              Declara siempre la lista explícita de columnas en tus consultas de inserción. Si en el futuro otro compañero o una migración añade una columna como <code>fecha_creacion TIMESTAMP</code>, los inserts que no especifiquen columnas fallarán arrojando el clásico <code>Error 1136: Column count doesn't match value count</code>.
+            </p>
+          </div>
+        </div>
+
+        <!-- 2.3 INSERT EN ESTUDIANTES -->
+        <h3 id="insert-estudiantes">3. Inserción de Registros en la Tabla `estudiantes`</h3>
+        <p>
+          Al insertar en tablas con tipos de datos variados, debemos respetar rigurosamente el formato de los literales en SQL:
+        </p>
+
+        <ul>
+          <li><strong>Cadenas y Textos (<code>VARCHAR</code>, <code>TEXT</code>)</strong>: Se delimitan obligatoriamente con comillas simples (ej. <code>'Javier'</code>, <code>'2026-001'</code>).</li>
+          <li><strong>Fechas (<code>DATE</code>)</strong>: Siguen el estándar internacional ISO-8601 en formato <code>'AAAA-MM-DD'</code> entre comillas simples (ej. <code>'2003-11-14'</code>).</li>
+          <li><strong>Números Enteros y Decimales (<code>INT</code>, <code>DECIMAL</code>)</strong>: Se escriben sin comillas; los decimales utilizan punto y no coma (ej. <code>9.45</code>, <code>1</code>).</li>
+          <li><strong>Valores Booleanos (<code>BOOLEAN</code>)</strong>: Pueden expresarse como palabras clave <code>TRUE</code> / <code>FALSE</code> o literales numéricos <code>1</code> / <code>0</code>.</li>
+        </ul>
+
+        <!-- Bloque de Código: Inserción individual de estudiantes -->
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">SQL &bull; Inserción con Tipos de Datos Mixtos</span>
+            <button class="copy-btn" title="Copiar código">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copiar
+            </button>
+          </div>
+          <pre class="code-content"><code><span class="sql-cmt">-- Inserción de un estudiante asignado a la carrera con id_carrera = 1</span>
+<span class="sql-kw">INSERT INTO</span> estudiantes (
+  matricula,
+  nombre,
+  apellido,
+  email,
+  fecha_nacimiento,
+  promedio,
+  id_carrera,
+  activo
+) <span class="sql-kw">VALUES</span> (
+  <span class="sql-str">'2026-001'</span>,
+  <span class="sql-str">'Javier'</span>,
+  <span class="sql-str">'Infante'</span>,
+  <span class="sql-str">'javier.infante@universidad.edu'</span>,
+  <span class="sql-str">'2003-11-14'</span>,
+  <span class="sql-num">9.45</span>,
+  <span class="sql-num">1</span>,
+  <span class="sql-kw">TRUE</span>
+);</code></pre>
+        </div>
+
+        <!-- 2.4 INSERCIÓN MASIVA / BULK INSERT -->
+        <h3 id="bulk-insert">4. Inserción Masiva o por Lotes (Bulk Insert)</h3>
+        <p>
+          Cuando requerimos registrar cientos o miles de registros simultáneamente (por ejemplo, al importar un archivo CSV o migrar datos de un sistema previo), ejecutar un <code>INSERT INTO</code> individual por cada registro resulta ineficiente, ya que el motor debe abrir transacciones de red, verificar bloqueos y escribir en el disco por cada fila.
+        </p>
+        <p>
+          SQL permite la <strong>inserción por lotes (Multi-row Insert)</strong> encadenando múltiples grupos de valores entre paréntesis separados por comas dentro de una única instrucción:
+        </p>
+
+        <!-- Bloque de Código: Bulk Insert -->
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">SQL &bull; Inserción Masiva Multi-Fila</span>
+            <button class="copy-btn" title="Copiar código">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copiar
+            </button>
+          </div>
+          <pre class="code-content"><code><span class="sql-cmt">-- Inserción simultánea de 3 integrantes del equipo en una sola sentencia atómica</span>
+<span class="sql-kw">INSERT INTO</span> estudiantes (
+  matricula, nombre, apellido, email, fecha_nacimiento, promedio, id_carrera
+)
+<span class="sql-kw">VALUES</span>
+  (<span class="sql-str">'2026-002'</span>, <span class="sql-str">'Carlos'</span>, <span class="sql-str">'Bernabe'</span>, <span class="sql-str">'carlos.bernabe@universidad.edu'</span>, <span class="sql-str">'2002-08-20'</span>, <span class="sql-num">8.90</span>, <span class="sql-num">1</span>),
+  (<span class="sql-str">'2026-003'</span>, <span class="sql-str">'Deivy'</span>, <span class="sql-str">'Prudente'</span>, <span class="sql-str">'deivy.prudente@universidad.edu'</span>, <span class="sql-str">'2003-04-05'</span>, <span class="sql-num">9.15</span>, <span class="sql-num">1</span>),
+  (<span class="sql-str">'2026-004'</span>, <span class="sql-str">'David'</span>, <span class="sql-str">'Párraga'</span>, <span class="sql-str">'david.parraga@universidad.edu'</span>, <span class="sql-str">'2001-12-30'</span>, <span class="sql-num">9.80</span>, <span class="sql-num">1</span>);</code></pre>
+        </div>
+
+        <!-- Callout Amarillo Pastel Tip Rendimiento -->
+        <div class="callout callout-tip">
+          <div class="callout-icon">⚡</div>
+          <div class="callout-body">
+            <div class="callout-title">Rendimiento Técnico: Hasta 10x Más Rápido</div>
+            <p>
+              Un único comando <code>INSERT</code> con 1,000 tuplas se procesa hasta 10 veces más rápido que 1,000 sentencias <code>INSERT</code> individuales, debido a la reducción drástica en la sobrecarga de paquetes TCP/IP y la consolidación de sincronizaciones de log transaccional (Write-Ahead Logging).
+            </p>
+          </div>
+        </div>
+
+        <!-- 2.5 MANEJO DE AUTO_INCREMENT, DEFAULT Y NULL -->
+        <h3 id="manejo-defaults">5. Comportamiento con AUTO_INCREMENT, DEFAULT y NULL</h3>
+        <p>
+          ¿Qué sucede exactamente con una columna cuando decidimos omitirla de la lista de campos en nuestro <code>INSERT INTO</code>? El motor SQL evalúa las restricciones configuradas en la definición de la tabla:
+        </p>
+
+        <div class="table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>Tipo de Regla</th>
+                <th>Declaración en CREATE TABLE</th>
+                <th>Resultado al Omitir en INSERT</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Secuencia Automática</strong></td>
+                <td><code>AUTO_INCREMENT PRIMARY KEY</code></td>
+                <td>Calcula el valor máximo actual + 1 y lo asigna sin error.</td>
+              </tr>
+              <tr>
+                <td><strong>Valor Predeterminado</strong></td>
+                <td><code>DEFAULT valor</code> (ej. <code>DEFAULT 0.00</code>)</td>
+                <td>Inyecta automáticamente el valor por defecto configurado.</td>
+              </tr>
+              <tr>
+                <td><strong>Admite Nulos</strong></td>
+                <td>Sin restricción <code>NOT NULL</code></td>
+                <td>Almacena el valor especial <code>NULL</code> (ausencia de dato).</td>
+              </tr>
+              <tr>
+                <td><strong>Obligatorio Estricto</strong></td>
+                <td><code>NOT NULL</code> sin cláusula <code>DEFAULT</code></td>
+                <td>
+                  <strong style="color: var(--pastel-red-accent);">RECHAZA LA CONSULTA</strong>: Devuelve un error y cancela la inserción.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Bloque de Código: Inserción mínima con defaults -->
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">SQL &bull; Inserción Apalancada en Valores por Defecto</span>
+            <button class="copy-btn" title="Copiar código">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copiar
+            </button>
+          </div>
+          <pre class="code-content"><code><span class="sql-cmt">-- Solo enviamos columnas obligatorias sin default:</span>
+<span class="sql-cmt">-- id_estudiante tomará el siguiente correlativo (5)</span>
+<span class="sql-cmt">-- promedio tomará automáticamente 0.00 (DEFAULT)</span>
+<span class="sql-cmt">-- activo tomará automáticamente TRUE (DEFAULT)</span>
+<span class="sql-cmt">-- fecha_nacimiento tomará NULL</span>
+<span class="sql-kw">INSERT INTO</span> estudiantes (matricula, nombre, apellido, email, id_carrera)
+<span class="sql-kw">VALUES</span> (<span class="sql-str">'2026-005'</span>, <span class="sql-str">'Mariana'</span>, <span class="sql-str">'López'</span>, <span class="sql-str">'mariana.lopez@universidad.edu'</span>, <span class="sql-num">1</span>);</code></pre>
+        </div>
+
+        <!-- 2.6 ERRORES COMUNES Y DIAGNÓSTICO -->
+        <h3 id="errores-insercion">6. Diagnóstico de Errores Comunes en Tiempo de Inserción</h3>
+        <p>
+          Al manipular datos relacionales, el motor SQL actúa como un centinela estricto. A continuación se presentan los errores más habituales que todo desarrollador debe dominar y cómo solventarlos:
+        </p>
+
+        <div class="table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>Código de Error</th>
+                <th>Mensaje Típico del Motor SQL</th>
+                <th>Causa Raíz</th>
+                <th>Solución Práctica</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code style="color: var(--pastel-red-accent);">Error 1062</code></td>
+                <td><code>Duplicate entry '...' for key 'email'</code></td>
+                <td>Se intentó insertar un valor repetido en una columna restringida con <code>UNIQUE</code> o <code>PRIMARY KEY</code>.</td>
+                <td>Verificar con un <code>SELECT</code> previo o usar identificadores únicos válidos.</td>
+              </tr>
+              <tr>
+                <td><code style="color: var(--pastel-red-accent);">Error 1452</code></td>
+                <td><code>Cannot add child row: foreign key constraint fails</code></td>
+                <td>Se especificó un <code>id_carrera</code> que no existe en la tabla padre referenciada.</td>
+                <td>Insertar primero el registro en la tabla padre (<code>carreras</code>) antes de asociarlo.</td>
+              </tr>
+              <tr>
+                <td><code style="color: var(--pastel-red-accent);">Error 1136</code></td>
+                <td><code>Column count doesn't match value count at row 1</code></td>
+                <td>La cantidad de columnas listadas no coincide exactamente con la cantidad de valores pasados en <code>VALUES</code>.</td>
+                <td>Contar y emparejar cada columna declarada con su respectivo valor.</td>
+              </tr>
+              <tr>
+                <td><code style="color: var(--pastel-red-accent);">Error 1364</code></td>
+                <td><code>Field 'nombre' doesn't have a default value</code></td>
+                <td>Se omitió una columna <code>NOT NULL</code> que no posee valor predeterminado.</td>
+                <td>Incluir obligatoriamente la columna en la lista o asignarle un valor <code>DEFAULT</code> en el DDL.</td>
+              </tr>
+              <tr>
+                <td><code style="color: var(--pastel-red-accent);">Error 1265</code></td>
+                <td><code>Data truncated for column 'promedio'</code></td>
+                <td>El valor sobrepasa la longitud de un <code>VARCHAR(n)</code> o la escala permitida de un <code>DECIMAL</code>.</td>
+                <td>Ajustar el valor numérico al formato definido (ej. <code>9.75</code> para <code>DECIMAL(4,2)</code>).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Callout Rojo Pastel Peligro -->
+        <div class="callout callout-danger">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-body">
+            <div class="callout-title">Atención: La Integridad Referencial es Inquebrantable</div>
+            <p>
+              Si intentas insertar un estudiante con <code>id_carrera = 99</code> cuando en la tabla <code>carreras</code> solo existen los identificadores <code>1</code>, <code>2</code> y <code>3</code>, el motor abortará la transacción para proteger la consistencia de la base de datos. ¡Nunca desactives las llaves foráneas para "forzar" inserciones de datos huérfanos!
+            </p>
+          </div>
+        </div>
+
+        <!-- 2.7 MINI-SIMULADOR INTERACTIVO DE INSERT -->
+        <h3 id="simulador-insert">7. 🎮 Mini-Simulador Interactivo de `INSERT INTO` en Vivo</h3>
+        <p>
+          Prueba el comportamiento en tiempo real de la tabla <code>estudiantes</code>. Utiliza los controles interactivos para ejecutar inserciones individuales, inserciones por lotes o experimentar cómo reacciona el motor ante un intento de clave duplicada:
+        </p>
+
+        <!-- Componente del Simulador Interactivo -->
+        <div class="simulator-card" id="insertSimulatorContainer">
+          <div class="simulator-header">
+            <div class="simulator-title-group">
+              <span class="simulator-badge">Playground DML</span>
+              <h4 class="simulator-title">Consola Interactiva &bull; Tabla estudiantes</h4>
+            </div>
+            <span class="author-chip" style="font-size: 0.75rem;">Motor SQL Simulado en Memoria</span>
+          </div>
+
+          <div class="simulator-body">
+            <!-- Botones de Acción -->
+            <div class="simulator-controls">
+              <button class="sim-btn sim-btn-primary" id="simBtnSingle">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Insertar Alumno Rápido
+              </button>
+
+              <button class="sim-btn sim-btn-bulk" id="simBtnBulk">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                </svg>
+                Inserción Masiva (+3 Alumnos)
+              </button>
+
+              <button class="sim-btn sim-btn-error" id="simBtnDuplicate">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                Probar Error UNIQUE (Duplicado)
+              </button>
+
+              <button class="sim-btn sim-btn-reset" id="simBtnReset" title="Restaurar datos base">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="1 4 1 10 7 10"></polyline>
+                  <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                </svg>
+                Restablecer Tabla
+              </button>
+            </div>
+
+            <!-- Visor de la Consulta SQL Ejecutada -->
+            <div class="sim-console">
+              <div class="sim-console-header">
+                <span>Última Sentencia SQL Ejecutada:</span>
+                <span id="simRowCountBadge">3 filas</span>
+              </div>
+              <pre class="sim-query-display" id="simQueryDisplay"><span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> estudiantes;</pre>
+              <div class="sim-feedback success" id="simFeedback">
+                <span>ℹ</span> Tabla inicializada con 3 estudiantes de muestra. ¡Haz clic en los botones superiores para insertar registros!
+              </div>
+            </div>
+
+            <!-- Visor de Tabla HTML Dinámica -->
+            <div class="sim-table-container">
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th>ID (PK)</th>
+                    <th>Matrícula</th>
+                    <th>Nombre Completo</th>
+                    <th>Email Universitario</th>
+                    <th>Carrera (FK)</th>
+                    <th>Promedio</th>
+                    <th>Activo</th>
+                  </tr>
+                </thead>
+                <tbody id="simTableBody">
+                  <!-- Se puebla dinámicamente mediante JavaScript -->
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+
       </section>
 
       <!-- MÓDULO 3: CARLOS BERNABE -->
@@ -606,9 +1005,12 @@
                 <span>Desarrollador</span>
               </div>
             </div>
-            <span class="module-badge badge-m2">Módulo 2: Inserción de Datos (INSERT)</span>
+            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+              <span class="module-badge badge-m2">Módulo 2: Inserción de Datos (INSERT)</span>
+              <span class="nav-badge-done">Listo</span>
+            </div>
             <p style="font-size: 0.85rem; margin: 0; color: var(--text-muted);">
-              Responsable de la documentación pedagógica de inserción simple, múltiple y validación de tipos en registros.
+              Responsable de la documentación técnica de DML, inserción simple, por lotes, gestión de AUTO_INCREMENT, catálogo de errores de integridad y simulador en vivo.
             </p>
           </div>
 
@@ -647,13 +1049,13 @@
       <!-- Footer de navegación -->
       <footer class="doc-footer">
         <div class="footer-nav">
-          <a href="#introduccion" class="footer-btn">
-            <span class="footer-btn-sub">Anterior</span>
-            <span class="footer-btn-title">&larr; Introducción a SQL</span>
+          <a href="#modulo-1" class="footer-btn">
+            <span class="footer-btn-sub">Módulo Anterior</span>
+            <span class="footer-btn-title">&larr; 1. Creación de BD y Tablas</span>
           </a>
-          <a href="#modulo-2" class="footer-btn" style="text-align: right;">
+          <a href="#modulo-3" class="footer-btn" style="text-align: right;">
             <span class="footer-btn-sub">Siguiente Módulo</span>
-            <span class="footer-btn-title">Inserción de Datos (INSERT) &rarr;</span>
+            <span class="footer-btn-title">3. Consultas (SELECT / WHERE) &rarr;</span>
           </a>
         </div>
         <p style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin: 0;">
@@ -689,7 +1091,28 @@
           <a href="#inspeccion-tablas" class="toc-link">5. Inspección (SHOW / DESCRIBE)</a>
         </li>
         <li class="toc-item">
-          <a href="#modulo-2" class="toc-link">Módulo 2: INSERT (Javier)</a>
+          <a href="#modulo-2" class="toc-link">Módulo 2: Inserción (Javier)</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#sintaxis-insert" class="toc-link">1. Sintaxis Básica INSERT</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#columnas-vs-total" class="toc-link">2. Lista Columnas vs Total</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#insert-estudiantes" class="toc-link">3. Literales en estudiantes</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#bulk-insert" class="toc-link">4. Inserción Masiva (Bulk)</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#manejo-defaults" class="toc-link">5. AUTO_INCREMENT y Defaults</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#errores-insercion" class="toc-link">6. Diagnóstico de Errores</a>
+        </li>
+        <li class="toc-item" style="padding-left: 0.75rem;">
+          <a href="#simulador-insert" class="toc-link">7. Simulador Interactivo</a>
         </li>
         <li class="toc-item">
           <a href="#modulo-3" class="toc-link">Módulo 3: SELECT (Carlos)</a>
