@@ -282,12 +282,180 @@
           </table>
         </div>
 
-        <!-- [PARTE 2 EN DESARROLLO] 4. Creación de Tablas y 5. Inspección -->
-        <div class="callout callout-info" style="margin-top: 2rem;">
-          <div class="callout-icon">📌</div>
+        <!-- 1.4 CREATE TABLE -->
+        <h3 id="creacion-tables">4. Creación de Tablas y Restricciones (`CREATE TABLE`)</h3>
+        <p>
+          Una tabla organiza la información en columnas (atributos) y filas (registros o tuplas). Mediante las <strong>restricciones (constraints)</strong> definimos reglas de validación indispensables:
+        </p>
+
+        <ul>
+          <li><strong><code>PRIMARY KEY</code></strong>: Identificador único irrepetible de cada fila. No permite valores nulos.</li>
+          <li><strong><code>AUTO_INCREMENT</code></strong> (o <code>IDENTITY</code>): Genera automáticamente un número secuencial creciente por cada nueva fila insertada.</li>
+          <li><strong><code>NOT NULL</code></strong>: Exige que el campo obligatoriamente contenga un valor al insertar o modificar.</li>
+          <li><strong><code>UNIQUE</code></strong>: Garantiza que no existan dos filas con el mismo valor en dicha columna (ideal para correos, cédulas o códigos de matrícula).</li>
+          <li><strong><code>DEFAULT</code></strong>: Asigna un valor predeterminado si no se especifica uno en el momento del `INSERT`.</li>
+        </ul>
+
+        <!-- Bloque de Código 3 -->
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">SQL &bull; Creación de Tablas con Llaves</span>
+            <button class="copy-btn" title="Copiar código">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copiar
+            </button>
+          </div>
+          <pre class="code-content"><code><span class="sql-cmt">-- 1. Crear tabla padre: carreras</span>
+<span class="sql-kw">CREATE TABLE IF NOT EXISTS</span> carreras (
+  id_carrera <span class="sql-type">INT</span> <span class="sql-kw">AUTO_INCREMENT</span>,
+  codigo <span class="sql-type">VARCHAR(10)</span> <span class="sql-kw">NOT NULL UNIQUE</span>,
+  nombre <span class="sql-type">VARCHAR(100)</span> <span class="sql-kw">NOT NULL</span>,
+  duracion_semestres <span class="sql-type">INT</span> <span class="sql-kw">DEFAULT 8</span>,
+  <span class="sql-kw">PRIMARY KEY</span> (id_carrera)
+);
+
+<span class="sql-cmt">-- 2. Crear tabla hija: estudiantes con llave foránea</span>
+<span class="sql-kw">CREATE TABLE IF NOT EXISTS</span> estudiantes (
+  id_estudiante <span class="sql-type">INT</span> <span class="sql-kw">AUTO_INCREMENT</span>,
+  matricula <span class="sql-type">VARCHAR(20)</span> <span class="sql-kw">NOT NULL UNIQUE</span>,
+  nombre <span class="sql-type">VARCHAR(60)</span> <span class="sql-kw">NOT NULL</span>,
+  apellido <span class="sql-type">VARCHAR(60)</span> <span class="sql-kw">NOT NULL</span>,
+  email <span class="sql-type">VARCHAR(120)</span> <span class="sql-kw">NOT NULL UNIQUE</span>,
+  fecha_nacimiento <span class="sql-type">DATE</span>,
+  promedio <span class="sql-type">DECIMAL(4, 2)</span> <span class="sql-kw">DEFAULT 0.00</span>,
+  id_carrera <span class="sql-type">INT</span> <span class="sql-kw">NOT NULL</span>,
+  activo <span class="sql-type">BOOLEAN</span> <span class="sql-kw">DEFAULT TRUE</span>,
+  <span class="sql-kw">PRIMARY KEY</span> (id_estudiante),
+  <span class="sql-kw">FOREIGN KEY</span> (id_carrera) <span class="sql-kw">REFERENCES</span> carreras(id_carrera)
+);</code></pre>
+        </div>
+
+        <!-- Visor del Esquema Resultante -->
+        <h4 id="vista-previa-esquema">Estructura del Esquema Resultante (`estudiantes`)</h4>
+        <div class="schema-preview">
+          <div class="schema-preview-header">
+            <span class="schema-table-name">tabla: estudiantes</span>
+            <span class="nav-badge-done">9 columnas definidas</span>
+          </div>
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>Columna</th>
+                <th>Tipo</th>
+                <th>Nulo</th>
+                <th>Clave</th>
+                <th>Default</th>
+                <th>Extra</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>id_estudiante</strong></td>
+                <td><code>INT</code></td>
+                <td>NO</td>
+                <td><span class="author-chip" style="padding: 2px 8px; font-size: 0.75rem; background: var(--pastel-blue-bg); color: var(--pastel-blue-accent);">PK</span></td>
+                <td>NULL</td>
+                <td>auto_increment</td>
+              </tr>
+              <tr>
+                <td><strong>matricula</strong></td>
+                <td><code>VARCHAR(20)</code></td>
+                <td>NO</td>
+                <td><span class="author-chip" style="padding: 2px 8px; font-size: 0.75rem;">UNI</span></td>
+                <td>NULL</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td><strong>nombre</strong></td>
+                <td><code>VARCHAR(60)</code></td>
+                <td>NO</td>
+                <td></td>
+                <td>NULL</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td><strong>apellido</strong></td>
+                <td><code>VARCHAR(60)</code></td>
+                <td>NO</td>
+                <td></td>
+                <td>NULL</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td><strong>email</strong></td>
+                <td><code>VARCHAR(120)</code></td>
+                <td>NO</td>
+                <td><span class="author-chip" style="padding: 2px 8px; font-size: 0.75rem;">UNI</span></td>
+                <td>NULL</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td><strong>promedio</strong></td>
+                <td><code>DECIMAL(4, 2)</code></td>
+                <td>SÍ</td>
+                <td></td>
+                <td>0.00</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td><strong>id_carrera</strong></td>
+                <td><code>INT</code></td>
+                <td>NO</td>
+                <td><span class="author-chip" style="padding: 2px 8px; font-size: 0.75rem; background: var(--pastel-yellow-bg); color: var(--pastel-yellow-text);">FK</span></td>
+                <td>NULL</td>
+                <td>references carreras(id_carrera)</td>
+              </tr>
+              <tr>
+                <td><strong>activo</strong></td>
+                <td><code>BOOLEAN</code></td>
+                <td>SÍ</td>
+                <td></td>
+                <td>TRUE</td>
+                <td>-</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 1.5 VERIFICACIÓN Y COMANDOS DE INSPECCIÓN -->
+        <h3 id="inspeccion-tablas">5. Comandos de Inspección y Verificación</h3>
+        <p>
+          Una vez ejecutado el script, puedes inspeccionar la estructura de tus tablas mediante comandos nativos:
+        </p>
+
+        <!-- Bloque de Código 4 -->
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">SQL &bull; Inspección de Esquema</span>
+            <button class="copy-btn" title="Copiar código">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copiar
+            </button>
+          </div>
+          <pre class="code-content"><code><span class="sql-cmt">-- Listar todas las tablas existentes en la base de datos actual</span>
+<span class="sql-kw">SHOW TABLES</span>;
+
+<span class="sql-cmt">-- Ver el detalle de campos, tipos y restricciones de una tabla</span>
+<span class="sql-kw">DESCRIBE</span> estudiantes;
+
+<span class="sql-cmt">-- Ver la sentencia DDL exacta con la que fue construida la tabla</span>
+<span class="sql-kw">SHOW CREATE TABLE</span> estudiantes;</code></pre>
+        </div>
+
+        <!-- Callout Rojo Pastel Peligro -->
+        <div class="callout callout-danger">
+          <div class="callout-icon">⚠️</div>
           <div class="callout-body">
-            <div class="callout-title">Siguiente Entrega (Parte 2 de Módulo 1): CREATE TABLE y Restricciones</div>
-            <p>En el siguiente commit se incorporará la creación de tablas con llaves primarias, llaves foráneas, visualizador del esquema y comandos de inspección.</p>
+            <div class="callout-title">Peligro Crítico: Comandos Destructivos DDL</div>
+            <p>
+              El comando <code>DROP TABLE nombre_tabla;</code> o <code>DROP DATABASE nombre_db;</code> elimina instantáneamente la estructura y <strong>todos los datos almacenados de forma irreversible</strong> sin pedir confirmación. Utilízalos con extrema precaución y nunca en entornos de producción sin un respaldo previo.
+            </p>
           </div>
         </div>
       </section>
